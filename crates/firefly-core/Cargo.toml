@@ -1,0 +1,19 @@
+[package]
+name = "firefly-core"
+description = "Core crate for firefly"
+authors = ["xupremix <xupremix.me@gmail.com>"]
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+readme.workspace = true
+
+[features]
+nightly = ["firefly-macros/nightly"]
+cuda = ["candle-nn/cuda", "candle-core/cuda", "candle-transformers/cuda"]
+
+[dependencies]
+firefly-macros = { path = "../firefly-macros", version = "*" }
+candle-nn = "0.8.0"
+candle-core = "0.8.0"
+candle-transformers = "0.8.0"
+candle-onnx = { workspace = true }

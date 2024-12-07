@@ -46,3 +46,31 @@ op! {
     broadcast_mul
     broadcast_sub
 }
+
+macro_rules! op_cmp {
+    ($( $name:ident )*) => {
+        $(
+            impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
+                pub fn $name<Dst: Shape, Rhs: Broadcast<S, Dst>>(
+                    &self,
+                    rhs: &Tensor<Rhs, K, D>,
+                ) -> Tensor<Dst, u8, D> {
+                    Rhs::BROADCAST_CHECK;
+                    Tensor {
+                        repr: self.repr.$name(&rhs.repr).unwrap(),
+                        ..Default::default()
+                    }
+                }
+            }
+        )*
+    };
+}
+
+op_cmp! {
+    broadcast_eq
+    broadcast_ge
+    broadcast_gt
+    broadcast_le
+    broadcast_lt
+    broadcast_ne
+}

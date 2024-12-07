@@ -1,15 +1,7 @@
 Methods
-    broadcast_as
-    broadcast_eq
-    broadcast_ge
-    broadcast_gt
-    broadcast_le
-    broadcast_left
-    broadcast_lt
     broadcast_matmul
     broadcast_maximum
     broadcast_minimum
-    broadcast_ne
     broadcast_pow
 
     affine

@@ -5,6 +5,9 @@ use evol_macros::shape;
 
 pub use candle_core::Shape as CandleShape;
 
+pub mod broadcast;
+use broadcast::Broadcast;
+
 use crate::kind::Kind;
 
 pub trait Shape: 'static + Debug + Clone + Copy + Send + Sync + PartialEq + Eq + Hash {

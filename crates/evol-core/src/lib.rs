@@ -13,16 +13,17 @@ pub mod prelude {
     use super::*;
 
     pub use device::*;
+    pub use evol_macros::*;
     pub use kind::*;
     pub use nn::*;
+    pub use shape::broadcast::*;
     pub use shape::*;
+    pub use tensor::methods::*;
     pub use tensor::*;
     pub use utils::CmpOp;
 }
 
 pub use evol_macros::*;
-// TODO: Remove this
-pub use safetensors;
 
 pub mod candle {
     pub use candle_core;

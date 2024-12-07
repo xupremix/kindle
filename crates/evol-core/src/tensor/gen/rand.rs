@@ -1,12 +1,3 @@
-/*
-    rand
-    rand_like
-    randn
-    randn_like
-    arange
-    arange_step
-*/
-
 use crate::{
     kind::ToF64,
     tensor::{Device, Kind, Shape, Tensor},

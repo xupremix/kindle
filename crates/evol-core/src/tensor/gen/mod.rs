@@ -3,6 +3,7 @@ use crate::kind::Kind;
 use crate::tensor::Shape;
 use crate::tensor::Tensor;
 
+mod arange;
 mod rand;
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {

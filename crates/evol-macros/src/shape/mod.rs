@@ -5,6 +5,7 @@ use quote::quote;
 use syn::Ident;
 
 mod arg;
+mod methods;
 
 pub(crate) fn shape(input: TokenStream) -> TokenStream {
     let args = syn::parse_macro_input!(input as Args);
@@ -81,6 +82,8 @@ pub(crate) fn shape(input: TokenStream) -> TokenStream {
         quote! { #(#out)* }
     };
 
+    let methods = methods::methods(dims, &name, &idents, at_tk);
+
     quote! {
         #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
         #vis struct #name #const_generics;
@@ -103,6 +106,9 @@ pub(crate) fn shape(input: TokenStream) -> TokenStream {
                 #as_slice
             }
         }
+
+        #methods
+
     }
     .into()
 }

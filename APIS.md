@@ -1,6 +1,21 @@
 Methods
+    broadcast_as
+    broadcast_eq
+    broadcast_ge
+    broadcast_gt
+    broadcast_le
+    broadcast_left
+    broadcast_lt
+    broadcast_matmul
+    broadcast_maximum
+    broadcast_minimum
+    broadcast_ne
+    broadcast_pow
 
     affine
+    inplace_op1
+    inplace_op2
+    inplace_op3
     apply
     apply_op1
     apply_op1_arc
@@ -20,22 +35,6 @@ Methods
     avg_pool2d
     avg_pool2d_with_stride
     backward
-    broadcast_add
-    broadcast_as
-    broadcast_div
-    broadcast_eq
-    broadcast_ge
-    broadcast_gt
-    broadcast_le
-    broadcast_left
-    broadcast_lt
-    broadcast_matmul
-    broadcast_maximum
-    broadcast_minimum
-    broadcast_mul
-    broadcast_ne
-    broadcast_pow
-    broadcast_sub
     cat
     ceil
     chunk
@@ -76,9 +75,6 @@ Methods
     id
     index_add
     index_select
-    inplace_op1
-    inplace_op2
-    inplace_op3
     interpolate1d
     interpolate2d
     is_contiguous

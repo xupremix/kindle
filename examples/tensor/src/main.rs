@@ -1,9 +1,12 @@
 // use evol::candle::candle_core;
-use evol::prelude::*;
+use evol::{candle::candle_core, prelude::*};
 
 fn main() {
-    let t1: Tensor<Rank2<2, 3>> = Tensor::new([[1., 2., 3.], [4., 5., 6.]]);
-    let t2: Tensor<Rank2<2, 3>> = Tensor::new([[1., 3., 3.], [4., 5., 6.]]);
-    let out = t1 == t2;
-    println!("{}", out);
+    let t1: Tensor<Rank2<2, 1>> = Tensor::ones();
+    let t2: Tensor<Rank2<1, 3>> = Tensor::ones();
+    let ris: Tensor<Rank2<2, 3>> = t1.broadcast_add(&t2);
+    println!("{}", ris);
+
+    // let t1: Tensor<Rank2<2, 1>> = Tensor::ones();
+    // let t2: Tensor<Rank2<2, 3>> = t1.broadcast();
 }

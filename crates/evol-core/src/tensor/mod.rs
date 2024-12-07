@@ -17,6 +17,7 @@ use crate::device::Cuda;
 mod broadcast;
 mod cmp;
 mod gen;
+pub mod methods;
 mod ops;
 mod wrap;
 

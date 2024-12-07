@@ -1,5 +1,4 @@
-use crate::prelude::{BroadcastAs, BroadcastLeft};
-use crate::shape::broadcast::Broadcast;
+use crate::prelude::{Broadcast, BroadcastAs, BroadcastLeft};
 use crate::tensor::{Device, Kind, Shape, Tensor};
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {

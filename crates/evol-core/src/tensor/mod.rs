@@ -17,14 +17,16 @@ use crate::device::Cuda;
 mod broadcast;
 mod cmp;
 mod gen;
-pub mod methods;
+mod methods;
 mod ops;
 mod wrap;
+
+pub mod method_traits;
 
 #[cfg(feature = "cuda")]
 #[derive(Clone)]
 pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cuda> {
-    repr: candle_core::Tensor,
+    pub(crate) repr: candle_core::Tensor,
     __shape: PhantomData<S>,
     __kind: PhantomData<K>,
     __device: PhantomData<D>,
@@ -33,7 +35,7 @@ pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cuda> {
 #[cfg(not(feature = "cuda"))]
 #[derive(Clone)]
 pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cpu> {
-    repr: candle_core::Tensor,
+    pub(crate) repr: candle_core::Tensor,
     __shape: PhantomData<S>,
     __kind: PhantomData<K>,
     __device: PhantomData<D>,

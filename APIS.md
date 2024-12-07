@@ -100,7 +100,6 @@ Methods
     read_npz_by_name
     recip
     repeat
-    reshape
     roll
     round_to
     save_safetensors

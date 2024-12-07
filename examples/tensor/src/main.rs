@@ -1,9 +1,8 @@
 use evol::prelude::*;
 
 fn main() {
-    let t1: Tensor<Rank2<1, 1>> = Tensor::ones();
-    let t2: Tensor<Rank2<2, 3>> = Tensor::ones();
-
-    let ris: Tensor<Rank2<2, 3>, _> = t1.broadcast_eq(&t2);
+    let t1: Tensor<Rank2<2, 3>> = Tensor::ones();
+    let t2: Tensor<Rank3<1, 2, 3>> = t1.zeros_like().reshape();
+    let ris = t2.reshape_like(&t1);
     println!("{}", ris);
 }

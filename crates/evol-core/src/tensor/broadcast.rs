@@ -1,15 +1,25 @@
+use crate::prelude::{BroadcastAs, BroadcastLeft};
 use crate::shape::broadcast::Broadcast;
 use crate::tensor::{Device, Kind, Shape, Tensor};
 
-// impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
-//     pub fn broadcast<Dst: Shape, Rhs: Broadcast<S, Dst>>(&self) -> Tensor<Dst, K, D> {
-//         Rhs::BROADCAST_CHECK;
-//         Tensor {
-//             repr: self.repr.broadcast_as(Dst::shape()).unwrap(),
-//             ..Default::default()
-//         }
-//     }
-// }
+impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
+    pub fn broadcast<Dst: BroadcastAs<S>>(&self) -> Tensor<Dst, K, D> {
+        Dst::BROADCAST_AS_CHECK;
+        Tensor {
+            repr: self.repr.broadcast_as(Dst::shape()).unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
+    pub fn broadcast_left<L: BroadcastLeft<S>>(&self) -> Tensor<L::Extended, K, D> {
+        Tensor {
+            repr: self.repr.broadcast_left(L::shape()).unwrap(),
+            ..Default::default()
+        }
+    }
+}
 
 macro_rules! op {
     ($( $name:ident )*) => {

@@ -1,12 +1,13 @@
-// use evol::candle::candle_core;
-use evol::{candle::candle_core, prelude::*};
+use evol::prelude::*;
 
 fn main() {
-    let t1: Tensor<Rank2<2, 1>> = Tensor::ones();
-    let t2: Tensor<Rank2<1, 3>> = Tensor::ones();
-    let ris: Tensor<Rank2<2, 3>> = t1.broadcast_add(&t2);
-    println!("{}", ris);
+    let t1: Tensor<Rank2<2, 3>> = Tensor::ones();
+    let t2: Tensor<Rank4<1, 2, 2, 3>> = t1.broadcast();
+    println!("{}", t2);
 
-    // let t1: Tensor<Rank2<2, 1>> = Tensor::ones();
-    // let t2: Tensor<Rank2<2, 3>> = t1.broadcast();
+    let t1: Tensor<Rank1<4>> = Tensor::ones();
+    let t2 = t1.broadcast_left::<Rank2<2, 3>>();
+    let s = t2.ones_like();
+    let ris = s + t2 * 3 + 2;
+    println!("{}", ris);
 }

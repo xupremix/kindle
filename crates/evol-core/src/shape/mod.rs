@@ -6,7 +6,7 @@ use evol_macros::shape;
 pub use candle_core::Shape as CandleShape;
 
 pub mod broadcast;
-use broadcast::Broadcast;
+use broadcast::{Broadcast, BroadcastAs, BroadcastLeft};
 
 use crate::kind::Kind;
 

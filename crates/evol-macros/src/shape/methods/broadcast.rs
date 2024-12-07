@@ -9,6 +9,13 @@ pub(crate) fn broadcast(dims: usize, name: &TokenStream, at_tk: bool) -> TokenSt
 
     let mut toks = vec![];
     let mut curr_dim = 1;
+
+    let path = if at_tk {
+        quote! {}
+    } else {
+        quote! { evol::prelude:: }
+    };
+
     while curr_dim <= dims {
         let shape_curr = Ident::new(&format!("Rank{}", curr_dim), Span::call_site());
         let shape_gen = name;
@@ -54,12 +61,6 @@ pub(crate) fn broadcast(dims: usize, name: &TokenStream, at_tk: bool) -> TokenSt
         );
 
         let assert_check = gen_assert_check(curr_dim, dims);
-
-        let path = if at_tk {
-            quote! {}
-        } else {
-            quote! { evol::prelude:: }
-        };
 
         toks.push(quote! {
             impl<

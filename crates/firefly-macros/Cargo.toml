@@ -9,6 +9,7 @@ readme.workspace = true
 
 [features]
 nightly = []
+half = []
 
 [lib]
 proc-macro = true

@@ -21,9 +21,10 @@ license = "MIT or Apache-2.0"
 [features]
 default = []
 
-all = ["nightly", "cuda"]
+all = ["nightly", "cuda", "half"]
 
 nightly = ["firefly-core/nightly"]
+half = ["firefly-core/half"]
 cuda = ["firefly-core/cuda"]
 
 [dependencies.firefly-core]
@@ -34,9 +35,5 @@ version = "0.1.0"
 proc-macro2 = "1.0.89"
 quote = "1.0.37"
 syn = {version = "2.0.87", features = ["full"]}
-trybuild = "1.0.101"
 serde = {version = "1.0.215", features = ["derive"]}
 candle-onnx = "0.8.0"
-
-[dev-dependencies]
-trybuild = "1.0.101"

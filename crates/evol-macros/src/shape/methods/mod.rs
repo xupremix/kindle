@@ -6,6 +6,7 @@ mod broadcast;
 mod broadcast_as;
 mod broadcast_left;
 mod squeeze_dim;
+mod unsqueeze;
 
 pub(crate) fn methods(
     dims: usize,
@@ -17,11 +18,13 @@ pub(crate) fn methods(
     let broadcast_as = broadcast_as::broadcast_as(dims, name, at_tk);
     let broadcast_left = broadcast_left::broadcast_left(dims, name, at_tk);
     let squeeze_dim = squeeze_dim::squeeze_dim(dims, name, idents, at_tk);
+    let unsqueeze = unsqueeze::unsqueeze(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
         #broadcast_as
         #broadcast_left
         #squeeze_dim
+        #unsqueeze
     }
 }

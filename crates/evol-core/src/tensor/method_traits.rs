@@ -23,3 +23,7 @@ impl<S: Shape, D: Shape> Reshape<S> for D {}
 pub trait SqueezeDim<const DIM: usize>: Shape {
     type SqueezeShape: Shape;
 }
+
+pub trait Unsqueeze<const DIM: usize>: Shape {
+    type UnsqueezeShape: Shape;
+}

@@ -60,7 +60,6 @@ Methods
     dims5
     elem_count
     embedding
-    eq
     exp
     expand
     eye
@@ -72,10 +71,8 @@ Methods
     from_iter
     from_raw_buffer
     gather
-    ge
     get
     get_on_dim
-    gt
     id
     index_add
     index_select
@@ -88,9 +85,7 @@ Methods
     is_fortran_contiguous
     is_variable
     layout
-    le
     log_sum_exp
-    lt
     matmul
     max
     max_keepdim
@@ -104,7 +99,6 @@ Methods
     min
     min_keepdim
     minimum
-    ne
     neg
     normalize_axis
     pad_with_same
@@ -157,6 +151,7 @@ Methods
     tril2
     triu2
     elu
+    narrow
 
 Trait Implementations
 

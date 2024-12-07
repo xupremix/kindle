@@ -1,37 +1,42 @@
-use std::fmt::Debug;
+pub use candle_core::WithDType as Kind;
 
-use candle_core::WithDType;
+#[cfg(feature = "half")]
+pub use half::{bf16, f16};
 
-pub(crate) mod conversions;
-
-pub trait Kind: 'static + Debug + Clone + Copy + Send + Sync + PartialEq + WithDType {
-    fn kind() -> candle_core::DType;
+pub(crate) trait ToF64 {
+    fn to_f64(self) -> f64;
 }
 
-macro_rules! kind {
-    ($( $t:ty, $n:ident );* $(;)?) => {
+macro_rules! to_f64 {
+    ($($t:ty)*) => {
         $(
-            impl Kind for $t {
-                fn kind() -> candle_core::DType {
-                    candle_core::DType::$n
+            impl ToF64 for $t {
+                #[inline(always)]
+                fn to_f64(self) -> f64 {
+                    self as f64
                 }
             }
         )*
     };
 }
 
-kind! {
-    u8, U8;
-    u32, U32;
-    i64, I64;
-    f32, F32;
-    f64, F64;
+to_f64! {
+    u8 u16 u32 u64 u128 usize
+    i8 i16 i32 i64 i128 isize
+    f32 f64
 }
 
 #[cfg(feature = "half")]
-pub use half::{bf16, f16};
+impl ToF64 for f16 {
+    #[inline(always)]
+    fn to_f64(self) -> f64 {
+        f64::from(self)
+    }
+}
 #[cfg(feature = "half")]
-kind! {
-    f16, F16;
-    bf16, BF16;
+impl ToF64 for bf16 {
+    #[inline(always)]
+    fn to_f64(self) -> f64 {
+        f64::from(self)
+    }
 }

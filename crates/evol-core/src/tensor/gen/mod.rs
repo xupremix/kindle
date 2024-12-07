@@ -3,12 +3,12 @@ use crate::kind::Kind;
 use crate::tensor::Shape;
 use crate::tensor::Tensor;
 
-use std::marker::PhantomData;
+mod rand;
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
     pub fn ones() -> Self {
         Self {
-            repr: candle_core::Tensor::ones(S::shape(), K::kind(), &D::device()).unwrap(),
+            repr: candle_core::Tensor::ones(S::shape(), K::DTYPE, &D::device()).unwrap(),
             ..Default::default()
         }
     }
@@ -26,6 +26,13 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
 
     pub fn zeros_like(&self) -> Self {
         Default::default()
+    }
+
+    pub fn full(value: K) -> Self {
+        Self {
+            repr: candle_core::Tensor::full(value, S::shape(), &D::device()).unwrap(),
+            ..Default::default()
+        }
     }
 
     // consider using *const K if performance is necessary
@@ -46,21 +53,3 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
         }
     }
 }
-
-/*
-    from_slice
-    from_vec
-    full
-    narrow
-    new
-    ones
-    ones_like
-    rand
-    rand_like
-    randn
-    randn_like
-    zeros
-    zeros_like
-    arange
-    arange_step
-*/

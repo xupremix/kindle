@@ -1,4 +1,4 @@
-use crate::kind::conversions::ToF64;
+use crate::kind::ToF64;
 use crate::{device::Device, kind::Kind, shape::Shape, tensor::Tensor};
 use std::borrow::Borrow;
 

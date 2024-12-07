@@ -14,6 +14,8 @@ use crate::{
 #[cfg(feature = "cuda")]
 use crate::device::Cuda;
 
+mod broadcast;
+mod cmp;
 mod gen;
 mod ops;
 mod wrap;
@@ -75,7 +77,7 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
 
     pub fn to_kind<K2: Kind>(&self) -> Tensor<S, K2, D> {
         Tensor {
-            repr: self.repr.to_dtype(K2::kind()).unwrap(),
+            repr: self.repr.to_dtype(K2::DTYPE).unwrap(),
             __shape: PhantomData,
             __kind: PhantomData,
             __device: PhantomData,
@@ -84,7 +86,7 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
 
     pub fn to_kind_like<K2: Kind>(&self, _: &Tensor<S, K2, D>) -> Tensor<S, K2, D> {
         Tensor {
-            repr: self.repr.to_dtype(K2::kind()).unwrap(),
+            repr: self.repr.to_dtype(K2::DTYPE).unwrap(),
             __shape: PhantomData,
             __kind: PhantomData,
             __device: PhantomData,
@@ -113,7 +115,7 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
 impl<S: Shape, K: Kind, D: Device> Default for Tensor<S, K, D> {
     fn default() -> Self {
         Self {
-            repr: candle_core::Tensor::zeros(S::shape(), K::kind(), &D::device()).unwrap(),
+            repr: candle_core::Tensor::zeros(S::shape(), K::DTYPE, &D::device()).unwrap(),
             __shape: PhantomData,
             __kind: PhantomData,
             __device: PhantomData,

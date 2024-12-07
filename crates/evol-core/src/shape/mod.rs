@@ -8,7 +8,7 @@ pub use candle_core::Shape as CandleShape;
 use crate::kind::Kind;
 
 pub trait Shape: 'static + Debug + Clone + Copy + Send + Sync + PartialEq + Eq + Hash {
-    type Shape<K: Kind>: 'static + Debug + Clone + Copy + Send + Sync + PartialEq;
+    type Shape<K: Kind>: 'static + Clone + Copy + Send + Sync + PartialEq;
     const DIMS: usize;
     const NELEMS: usize;
     fn shape() -> CandleShape;

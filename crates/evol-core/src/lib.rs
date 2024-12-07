@@ -17,6 +17,7 @@ pub mod prelude {
     pub use nn::*;
     pub use shape::*;
     pub use tensor::*;
+    pub use utils::CmpOp;
 }
 
 pub use evol_macros::*;

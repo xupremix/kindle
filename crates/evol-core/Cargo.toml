@@ -1,6 +1,6 @@
 [package]
-name = "firefly-core"
-description = "Core crate for firefly"
+name = "evol-core"
+description = "Core crate for evol"
 authors = ["xupremix <xupremix.me@gmail.com>"]
 edition.workspace = true
 license.workspace = true
@@ -8,12 +8,12 @@ version.workspace = true
 readme.workspace = true
 
 [features]
-nightly = ["firefly-macros/nightly"]
-half = ["firefly-macros/half", "dep:half"]
+nightly = ["evol-macros/nightly"]
+half = ["evol-macros/half", "dep:half"]
 cuda = ["candle-nn/cuda", "candle-core/cuda", "candle-transformers/cuda"]
 
 [dependencies]
-firefly-macros = { path = "../firefly-macros", version = "*" }
+evol-macros = { path = "../evol-macros", version = "*" }
 candle-nn = "0.8.0"
 candle-core = "0.8.0"
 candle-transformers = "0.8.0"

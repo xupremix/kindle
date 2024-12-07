@@ -1,6 +1,6 @@
 [package]
-name = "firefly-macros"
-description = "Macro crate for firefly"
+name = "evol-macros"
+description = "Macro crate for evol"
 authors = ["xupremix <xupremix.me@gmail.com>"]
 edition.workspace = true
 license.workspace = true

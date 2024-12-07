@@ -12,7 +12,7 @@ readme = "README.md"
 license = "MIT or Apache-2.0"
 
 [package]
-name = "firefly"
+name = "evol"
 version = "0.1.0"
 edition = "2021"
 readme = "README.md"
@@ -23,12 +23,12 @@ default = []
 
 all = ["nightly", "cuda", "half"]
 
-nightly = ["firefly-core/nightly"]
-half = ["firefly-core/half"]
-cuda = ["firefly-core/cuda"]
+nightly = ["evol-core/nightly"]
+half = ["evol-core/half"]
+cuda = ["evol-core/cuda"]
 
-[dependencies.firefly-core]
-path = "crates/firefly-core"
+[dependencies.evol-core]
+path = "crates/evol-core"
 version = "0.1.0"
 
 [workspace.dependencies]

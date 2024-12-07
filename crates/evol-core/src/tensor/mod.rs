@@ -1,4 +1,9 @@
-use std::{fmt::Debug, marker::PhantomData};
+use safetensors::tensor::View;
+use std::{
+    borrow::Cow,
+    fmt::{Debug, Display},
+    marker::PhantomData,
+};
 
 use crate::{
     device::{Cpu, Device},
@@ -6,8 +11,23 @@ use crate::{
     shape::Shape,
 };
 
-mod gen;
+#[cfg(feature = "cuda")]
+use crate::device::Cuda;
 
+mod gen;
+mod ops;
+mod wrap;
+
+#[cfg(feature = "cuda")]
+#[derive(Clone)]
+pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cuda> {
+    repr: candle_core::Tensor,
+    __shape: PhantomData<S>,
+    __kind: PhantomData<K>,
+    __device: PhantomData<D>,
+}
+
+#[cfg(not(feature = "cuda"))]
 #[derive(Clone)]
 pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cpu> {
     repr: candle_core::Tensor,
@@ -17,16 +37,76 @@ pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cpu> {
 }
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
-    pub const fn dims() -> usize {
+    pub const fn shape_rank() -> usize {
         S::DIMS
+    }
+
+    pub const fn rank(&self) -> usize {
+        S::DIMS
+    }
+
+    pub const fn shape_nelems() -> usize {
+        S::NELEMS
     }
 
     pub const fn nelems() -> usize {
         S::NELEMS
     }
 
-    pub fn to_vec(&self) -> Vec<Vec<K>> {
-        self.repr.to_vec2().unwrap()
+    pub fn shape_shape() -> &'static [usize] {
+        S::dims()
+    }
+
+    pub fn shape(&self) -> &'static [usize] {
+        S::dims()
+    }
+
+    pub fn stride(&self) -> &[usize] {
+        self.repr.stride()
+    }
+
+    pub fn data(&self) -> Cow<'_, [u8]> {
+        self.repr.data()
+    }
+
+    pub fn data_len(&self) -> usize {
+        self.repr.data_len()
+    }
+
+    pub fn to_kind<K2: Kind>(&self) -> Tensor<S, K2, D> {
+        Tensor {
+            repr: self.repr.to_dtype(K2::kind()).unwrap(),
+            __shape: PhantomData,
+            __kind: PhantomData,
+            __device: PhantomData,
+        }
+    }
+
+    pub fn to_kind_like<K2: Kind>(&self, _: &Tensor<S, K2, D>) -> Tensor<S, K2, D> {
+        Tensor {
+            repr: self.repr.to_dtype(K2::kind()).unwrap(),
+            __shape: PhantomData,
+            __kind: PhantomData,
+            __device: PhantomData,
+        }
+    }
+
+    pub fn to_device<D2: Device>(&self) -> Tensor<S, K, D2> {
+        Tensor {
+            repr: self.repr.to_device(&D2::device()).unwrap(),
+            __shape: PhantomData,
+            __kind: PhantomData,
+            __device: PhantomData,
+        }
+    }
+
+    pub fn to_device_like<D2: Device>(&self, _: &Tensor<S, K, D2>) -> Tensor<S, K, D2> {
+        Tensor {
+            repr: self.repr.to_device(&D2::device()).unwrap(),
+            __shape: PhantomData,
+            __kind: PhantomData,
+            __device: PhantomData,
+        }
     }
 }
 
@@ -47,6 +127,16 @@ impl<S: Shape, K: Kind, D: Device> Debug for Tensor<S, K, D> {
             write!(f, "{:#?}", self.repr)
         } else {
             write!(f, "{:?}", self.repr)
+        }
+    }
+}
+
+impl<S: Shape, K: Kind, D: Device> Display for Tensor<S, K, D> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if f.alternate() {
+            write!(f, "{:#}", self.repr)
+        } else {
+            write!(f, "{}", self.repr)
         }
     }
 }

@@ -1,8 +1,5 @@
 Methods
 
-
-    abs
-    add
     affine
     apply
     apply_op1
@@ -50,7 +47,6 @@ Methods
     conv_transpose1d
     conv_transpose2d
     copy
-    cos
     cumsum
     detach
     device
@@ -62,13 +58,9 @@ Methods
     dims3
     dims4
     dims5
-    div
-    dtype
     elem_count
-    elu
     embedding
     eq
-    erf
     exp
     expand
     eye
@@ -76,14 +68,11 @@ Methods
     flatten_all
     flatten_from
     flatten_to
-    floor
     force_contiguous
     from_iter
     from_raw_buffer
     gather
     ge
-    gelu
-    gelu_erf
     get
     get_on_dim
     gt
@@ -100,7 +89,6 @@ Methods
     is_variable
     layout
     le
-    log
     log_sum_exp
     lt
     matmul
@@ -116,7 +104,6 @@ Methods
     min
     min_keepdim
     minimum
-    mul
     ne
     neg
     normalize_axis
@@ -130,39 +117,27 @@ Methods
     read_npz
     read_npz_by_name
     recip
-    relu
     repeat
     reshape
     roll
-    round
     round_to
     save_safetensors
     scatter_add
-    shape
     sign
-    silu
-    sin
     slice_assign
     slice_scatter
     slice_scatter0
     slice_set
     sort_last_dim
-    sqr
-    sqrt
     squeeze
     stack
     storage_and_layout
-    stride
     strided_blocks
     strided_index
-    sub
     sum
     sum_all
     sum_keepdim
     t
-    tanh
-    to_device
-    to_dtype
     to_scalar
     to_vec0
     to_vec1
@@ -170,8 +145,6 @@ Methods
     to_vec3
     track_op
     transpose
-    tril2
-    triu2
     unsqueeze
     upsample_nearest1d
     upsample_nearest2d
@@ -181,36 +154,13 @@ Methods
     write_bytes
     write_npy
     write_npz
+    tril2
+    triu2
+    elu
 
 Trait Implementations
 
-    Add<&Tensor>
-    Add<&Tensor>
-    Add<B>
-    Add<B>
-    Add<Result<B, Error>>
-    Add<Result<B, Error>>
-    Add<Tensor>
-    Add<Tensor>
-    Add<f64>
-    Add<f64>
-    AsRef<Tensor>
-    Clone
-    Debug
     Deref
-    Display
-    Div<&Tensor>
-    Div<&Tensor>
-    Div<B>
-    Div<B>
-    Div<Result<B, Error>>
-    Div<Result<B, Error>>
-    Div<Tensor>
-    Div<Tensor>
-    Div<f64>
-    Div<f64>
-    From<&Tensor>
-    From<Tensor>
     IndexOp<(A, B)>
     IndexOp<(A, B, C)>
     IndexOp<(A, B, C, D)>
@@ -219,26 +169,6 @@ Trait Implementations
     IndexOp<(A, B, C, D, E, F, G)>
     IndexOp<(A,)>
     IndexOp<T>
-    Mul<&Tensor>
-    Mul<&Tensor>
-    Mul<B>
-    Mul<B>
-    Mul<Result<B, Error>>
-    Mul<Result<B, Error>>
-    Mul<Tensor>
-    Mul<Tensor>
-    Mul<f64>
-    Mul<f64>
-    Sub<&Tensor>
-    Sub<&Tensor>
-    Sub<B>
-    Sub<B>
-    Sub<Result<B, Error>>
-    Sub<Result<B, Error>>
-    Sub<Tensor>
-    Sub<Tensor>
-    Sub<f64>
-    Sub<f64>
     TensorOrScalar
     TryFrom<&Tensor>
     TryFrom<&Tensor>
@@ -269,5 +199,3 @@ Trait Implementations
     TryFrom<i64>
     TryFrom<u32>
     TryFrom<u8>
-    View
-    View

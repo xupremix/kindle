@@ -28,6 +28,7 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
         Default::default()
     }
 
+    // consider using *const K if performance is necessary
     pub fn from_slice(arr: &S::Shape<K>) -> Self {
         Self {
             repr: candle_core::Tensor::from_slice(S::as_slice(arr), S::shape(), &D::device())
@@ -36,6 +37,7 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
         }
     }
 
+    // consider using *const K if performance is necessary
     pub fn new(arr: S::Shape<K>) -> Self {
         Self {
             repr: candle_core::Tensor::from_slice(S::as_slice(&arr), S::shape(), &D::device())

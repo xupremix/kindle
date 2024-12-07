@@ -18,4 +18,5 @@ candle-nn = "0.8.0"
 candle-core = "0.8.0"
 candle-transformers = "0.8.0"
 candle-onnx = { workspace = true }
+safetensors = { workspace = true }
 half = { version = "2.4.1", optional = true }

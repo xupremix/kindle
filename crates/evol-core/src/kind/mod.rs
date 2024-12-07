@@ -2,6 +2,8 @@ use std::fmt::Debug;
 
 use candle_core::WithDType;
 
+pub(crate) mod conversions;
+
 pub trait Kind: 'static + Debug + Clone + Copy + Send + Sync + PartialEq + WithDType {
     fn kind() -> candle_core::DType;
 }
@@ -27,7 +29,7 @@ kind! {
 }
 
 #[cfg(feature = "half")]
-use half::{bf16, f16};
+pub use half::{bf16, f16};
 #[cfg(feature = "half")]
 kind! {
     f16, F16;

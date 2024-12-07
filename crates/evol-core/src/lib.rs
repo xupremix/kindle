@@ -20,6 +20,8 @@ pub mod prelude {
 }
 
 pub use evol_macros::*;
+// TODO: Remove this
+pub use safetensors;
 
 pub mod candle {
     pub use candle_core;

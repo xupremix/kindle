@@ -1,6 +1,7 @@
 mod argmax;
 mod argmin;
 mod flatten;
+mod matmul;
 mod reshape;
 mod squeeze;
 mod t;

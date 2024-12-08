@@ -9,6 +9,7 @@ mod broadcast_as;
 mod broadcast_left;
 mod flatten;
 mod flatten_from;
+mod matmul;
 mod squeeze_dim;
 mod t;
 mod transpose;
@@ -31,6 +32,7 @@ pub(crate) fn methods(
     let flatten_from = flatten_from::flatten_from(dims, name, idents, at_tk);
     let argmax = argmax::argmax(dims, name, idents, at_tk);
     let argmin = argmin::argmin(dims, name, idents, at_tk);
+    let matmul = matmul::matmul(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -44,5 +46,6 @@ pub(crate) fn methods(
         #flatten_from
         #argmax
         #argmin
+        #matmul
     }
 }

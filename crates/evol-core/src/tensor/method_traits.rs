@@ -64,3 +64,7 @@ pub trait Argmax<const DIM: usize, const KEEP_DIM: bool>: Shape {
 pub trait Argmin<const DIM: usize, const KEEP_DIM: bool>: Shape {
     type ArgminShape: Shape;
 }
+
+pub trait Matmul<Src: Shape>: Shape {
+    type MatmulShape: Shape;
+}

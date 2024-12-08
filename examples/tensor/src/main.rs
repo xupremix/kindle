@@ -1,7 +1,8 @@
 use evol::prelude::*;
 
 fn main() {
-    let t: Tensor<Rank6<2, 2, 3, 2, 3, 1>> = Tensor::ones();
-    let t: Tensor<Rank6<2, 2, 1, 2, 3, 1>> = t.argmin_keepdim::<2>();
-    println!("{}", t);
+    let t1: Tensor<Rank3<2, 3, 4>> = Tensor::ones();
+    let t2: Tensor<Rank3<2, 4, 5>> = Tensor::ones();
+    let t3 = t1.matmul(&t2);
+    println!("{}", t3);
 }

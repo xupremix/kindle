@@ -1,7 +1,7 @@
 use evol::prelude::*;
 
 fn main() {
-    let v = [1, 2, 3, 4, 5, 6];
-    let t2: Tensor<Rank2<2, 3>, u32> = Tensor::from_slice(&v);
-    println!("{}", t2);
+    let t: Tensor<Rank6<2, 2, 3, 2, 3, 1>> = Tensor::ones();
+    let t = t.flatten_from::<3, Rank4<2, 2, 3, 6>>();
+    println!("{}", t);
 }

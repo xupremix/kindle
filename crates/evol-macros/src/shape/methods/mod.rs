@@ -5,6 +5,8 @@ use syn::Ident;
 mod broadcast;
 mod broadcast_as;
 mod broadcast_left;
+mod flatten;
+mod flatten_from;
 mod squeeze_dim;
 mod t;
 mod transpose;
@@ -23,6 +25,8 @@ pub(crate) fn methods(
     let unsqueeze = unsqueeze::unsqueeze(dims, name, idents, at_tk);
     let transpose = transpose::transpose(dims, name, idents, at_tk);
     let t = t::t(dims, name, idents, at_tk);
+    let flatten = flatten::flatten(dims, name, idents, at_tk);
+    let flatten_from = flatten_from::flatten_from(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -32,5 +36,7 @@ pub(crate) fn methods(
         #unsqueeze
         #transpose
         #t
+        #flatten
+        #flatten_from
     }
 }

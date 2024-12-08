@@ -40,3 +40,25 @@ pub trait FromSlice<T> {
     const FROM_SLICE_CHECK: ();
     fn from_slice(slice: T) -> Self;
 }
+
+pub trait FlattenAll<const N: usize>: Shape {
+    const FLATTEN_ALL_CHECK: () = assert!(
+        N == Self::NELEMS,
+        "The flattened shape must have the same number of elements as the original shape"
+    );
+}
+impl<const N: usize, S: Shape> FlattenAll<N> for S {}
+
+pub trait Flatten<Src: Shape, const START: usize, const END: usize>: Shape {
+    const FLATTEN_CHECK: ();
+}
+
+pub trait FlattenFrom<Src: Shape, const START: usize>: Shape {
+    const FLATTEN_CHECK: ();
+}
+
+// flatten [start - end]
+// flatten_all [0 - n]
+// flatten_from [start - n]
+// flatten_to [0 - end]
+// flatten_dim [x - x]

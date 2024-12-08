@@ -1,3 +1,4 @@
+mod flatten;
 mod reshape;
 mod squeeze;
 mod t;

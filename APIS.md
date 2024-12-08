@@ -1,4 +1,6 @@
 Methods
+
+
     broadcast_matmul
     broadcast_maximum
     broadcast_minimum
@@ -54,10 +56,6 @@ Methods
     exp
     expand
     eye
-    flatten
-    flatten_all
-    flatten_from
-    flatten_to
     force_contiguous
     from_iter
     from_raw_buffer

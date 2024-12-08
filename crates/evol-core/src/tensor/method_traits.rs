@@ -35,3 +35,8 @@ pub trait T: Shape {
 pub trait Transpose<const D0: usize, const D1: usize>: Shape {
     type Transposed: Shape;
 }
+
+pub trait FromSlice<T> {
+    const FROM_SLICE_CHECK: ();
+    fn from_slice(slice: T) -> Self;
+}

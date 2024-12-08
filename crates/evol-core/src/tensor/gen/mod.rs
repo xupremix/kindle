@@ -1,7 +1,5 @@
-use crate::device::Device;
-use crate::kind::Kind;
-use crate::tensor::Shape;
-use crate::tensor::Tensor;
+use crate::prelude::FromSlice;
+use crate::tensor::{Device, Kind, Shape, Tensor};
 
 mod arange;
 mod rand;
@@ -37,7 +35,7 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
     }
 
     // consider using *const K if performance is necessary
-    pub fn from_slice(arr: &S::Shape<K>) -> Self {
+    pub fn from_arr(arr: &S::Shape<K>) -> Self {
         Self {
             repr: candle_core::Tensor::from_slice(S::as_slice(arr), S::shape(), &D::device())
                 .unwrap(),
@@ -50,6 +48,34 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
         Self {
             repr: candle_core::Tensor::from_slice(S::as_slice(&arr), S::shape(), &D::device())
                 .unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+impl<'a, const N: usize, S: Shape, K: Kind, D: Device> FromSlice<&'a [K; N]> for Tensor<S, K, D> {
+    const FROM_SLICE_CHECK: () = assert!(
+        N == S::NELEMS,
+        "The slice must have the same number of elements"
+    );
+    fn from_slice(slice: &'a [K; N]) -> Self {
+        <Self as FromSlice<&[K; N]>>::FROM_SLICE_CHECK;
+        Self {
+            repr: candle_core::Tensor::from_slice(slice, S::shape(), &D::device()).unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+impl<const N: usize, S: Shape, K: Kind, D: Device> FromSlice<[K; N]> for Tensor<S, K, D> {
+    const FROM_SLICE_CHECK: () = assert!(
+        N == S::NELEMS,
+        "The slice must have the same number of elements"
+    );
+    fn from_slice(slice: [K; N]) -> Self {
+        <Self as FromSlice<&[K; N]>>::FROM_SLICE_CHECK;
+        Self {
+            repr: candle_core::Tensor::from_slice(&slice, S::shape(), &D::device()).unwrap(),
             ..Default::default()
         }
     }

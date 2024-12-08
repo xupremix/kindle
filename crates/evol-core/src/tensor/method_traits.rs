@@ -27,3 +27,7 @@ pub trait SqueezeDim<const DIM: usize>: Shape {
 pub trait Unsqueeze<const DIM: usize>: Shape {
     type UnsqueezeShape: Shape;
 }
+
+pub trait T: Shape {
+    type Transposed: Shape;
+}

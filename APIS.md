@@ -94,7 +94,6 @@ Methods
     permute
     pow
     powf
-    rank
     read_npy
     read_npz
     read_npz_by_name
@@ -110,7 +109,6 @@ Methods
     slice_scatter0
     slice_set
     sort_last_dim
-    squeeze
     stack
     storage_and_layout
     strided_blocks
@@ -118,7 +116,6 @@ Methods
     sum
     sum_all
     sum_keepdim
-    t
     to_scalar
     to_vec0
     to_vec1
@@ -126,7 +123,6 @@ Methods
     to_vec3
     track_op
     transpose
-    unsqueeze
     upsample_nearest1d
     upsample_nearest2d
     var
@@ -151,7 +147,6 @@ Trait Implementations
     IndexOp<(A, B, C, D, E, F, G)>
     IndexOp<(A,)>
     IndexOp<T>
-    TensorOrScalar
     TryFrom<&Tensor>
     TryFrom<&Tensor>
     TryFrom<&Tensor>

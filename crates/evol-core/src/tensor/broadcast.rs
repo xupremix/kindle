@@ -25,6 +25,7 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
         &self,
         rhs: &Tensor<Rhs, K, D>,
     ) -> Tensor<Dst, K, D> {
+        Rhs::BROADCAST_MATMUL_CHECK;
         Tensor {
             repr: self.repr.broadcast_matmul(&rhs.repr).unwrap(),
             ..Default::default()

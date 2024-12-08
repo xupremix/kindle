@@ -30,17 +30,17 @@ fn gen_assert_check(dims: usize, curr: usize) -> TokenStream {
 
     (start..end).enumerate().for_each(|(i, k)| {
         let d = Ident::new(&format!("D{}", k), Span::call_site());
-        let t = Ident::new(&format!("TD{}", i), Span::call_site());
         let n = Ident::new(&format!("ND{}", i), Span::call_site());
+        let t = Ident::new(&format!("TD{}", i), Span::call_site());
 
         out.push(quote! {
-            ((#t == #d || #t == #n) &&
+            (#t == #d || #t == #n) &&
             (#t >= #d && #t >= #n) &&
-            (#n == #d || #n == 1 || #d == 1))
+            (#n == #d || #n == 1 || #d == 1) &&
         });
     });
 
-    quote! { #(#out || )* false }
+    quote! { #(#out)* true }
 }
 
 pub(crate) fn broadcast_matmul(
@@ -64,7 +64,7 @@ pub(crate) fn broadcast_matmul(
 
     while curr_dim <= dims {
         let source_shape = name;
-        let source_idents = idents.to_vec();
+        let mut source_idents = idents.to_vec();
 
         let shape_rhs = Ident::new(&format!("Rank{}", curr_dim), Span::call_site());
         let mut rhs_idents = (0..curr_dim - 2)
@@ -146,13 +146,19 @@ pub(crate) fn broadcast_matmul(
         });
 
         if curr_dim != dims {
+            target_idents[dims - 2] = source_idents[dims - 1].clone();
+            let last = target_idents[dims - 1].clone();
+            target_idents[dims - 1] = source_idents[dims - 2].clone();
+            source_idents[dims - 1] = last;
+            source_idents.swap(dims - 1, dims - 2);
+
             toks.push(quote! {
                 impl<
                     #const_dims
                 > #path BroadcastMatmul<
                     #shape_rhs<#(#rhs_idents),*>,
-                    #source_shape<#(#source_idents),*>
-                > for #target_shape<#(#target_idents),*> {
+                    #target_shape<#(#target_idents),*>
+                > for #source_shape<#(#source_idents),*> {
                     const BROADCAST_MATMUL_CHECK: () = assert!(#assert_check, #assert_msg);
                 }
             });

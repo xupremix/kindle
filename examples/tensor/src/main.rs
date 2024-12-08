@@ -1,8 +1,7 @@
 use evol::{candle::candle_core, prelude::*};
 
 fn main() {
-    let t1 = candle_core::Tensor::ones((3,), f32::DTYPE, &Cpu::device()).unwrap();
-    let t2 = candle_core::Tensor::ones((3, 4), f32::DTYPE, &Cpu::device()).unwrap();
-    let ris = t1.broadcast_matmul(&t2).unwrap();
-    println!("{}", ris);
+    let t1: Tensor<Rank3<1, 3, 2>> = Tensor::ones();
+    let t2: Tensor<Rank4<1, 3, 2, 3>> = Tensor::ones();
+    let ris: Tensor<Rank4<1, 3, 3, 3>> = t1.broadcast_matmul(&t2);
 }

@@ -2,6 +2,8 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::Ident;
 
+mod argmax;
+mod argmin;
 mod broadcast;
 mod broadcast_as;
 mod broadcast_left;
@@ -27,6 +29,8 @@ pub(crate) fn methods(
     let t = t::t(dims, name, idents, at_tk);
     let flatten = flatten::flatten(dims, name, idents, at_tk);
     let flatten_from = flatten_from::flatten_from(dims, name, idents, at_tk);
+    let argmax = argmax::argmax(dims, name, idents, at_tk);
+    let argmin = argmin::argmin(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -38,5 +42,7 @@ pub(crate) fn methods(
         #t
         #flatten
         #flatten_from
+        #argmax
+        #argmin
     }
 }

@@ -1,5 +1,9 @@
 Methods
 
+    argmax
+    argmax_keepdim
+    argmin
+    argmin_keepdim
 
     broadcast_matmul
     broadcast_maximum
@@ -22,10 +26,6 @@ Methods
     apply_op3_no_bwd
     apply_t
     arg_sort_last_dim
-    argmax
-    argmax_keepdim
-    argmin
-    argmin_keepdim
     avg_pool2d
     avg_pool2d_with_stride
     backward

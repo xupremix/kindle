@@ -57,8 +57,10 @@ pub trait FlattenFrom<Src: Shape, const START: usize>: Shape {
     const FLATTEN_CHECK: ();
 }
 
-// flatten [start - end]
-// flatten_all [0 - n]
-// flatten_from [start - n]
-// flatten_to [0 - end]
-// flatten_dim [x - x]
+pub trait Argmax<const DIM: usize, const KEEP_DIM: bool>: Shape {
+    type ArgmaxShape: Shape;
+}
+
+pub trait Argmin<const DIM: usize, const KEEP_DIM: bool>: Shape {
+    type ArgminShape: Shape;
+}

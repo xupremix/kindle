@@ -68,3 +68,7 @@ pub trait Argmin<const DIM: usize, const KEEP_DIM: bool>: Shape {
 pub trait Matmul<Src: Shape>: Shape {
     type MatmulShape: Shape;
 }
+
+pub trait BroadcastMatmul<Src: Shape, Dst: Shape>: Shape {
+    const BROADCAST_MATMUL_CHECK: ();
+}

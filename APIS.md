@@ -1,10 +1,5 @@
 Methods
 
-    argmax
-    argmax_keepdim
-    argmin
-    argmin_keepdim
-
     broadcast_matmul
     broadcast_maximum
     broadcast_minimum
@@ -72,7 +67,6 @@ Methods
     is_variable
     layout
     log_sum_exp
-    matmul
     max
     max_keepdim
     max_pool2d

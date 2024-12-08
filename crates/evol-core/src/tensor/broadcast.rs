@@ -1,4 +1,4 @@
-use crate::prelude::{Broadcast, BroadcastAs, BroadcastLeft};
+use crate::prelude::{Broadcast, BroadcastAs, BroadcastLeft, BroadcastMatmul};
 use crate::tensor::{Device, Kind, Shape, Tensor};
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
@@ -15,6 +15,18 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
     pub fn broadcast_left<L: BroadcastLeft<S>>(&self) -> Tensor<L::Extended, K, D> {
         Tensor {
             repr: self.repr.broadcast_left(L::shape()).unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
+    pub fn broadcast_matmul<Dst: Shape, Rhs: BroadcastMatmul<S, Dst>>(
+        &self,
+        rhs: &Tensor<Rhs, K, D>,
+    ) -> Tensor<Dst, K, D> {
+        Tensor {
+            repr: self.repr.broadcast_matmul(&rhs.repr).unwrap(),
             ..Default::default()
         }
     }

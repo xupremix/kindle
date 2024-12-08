@@ -1,4 +1,5 @@
 mod reshape;
 mod squeeze;
 mod t;
+mod transpose;
 mod unsqueeze;

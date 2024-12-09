@@ -7,7 +7,7 @@ use candle_core::WithDType;
 use candle_nn::Module as _;
 
 use crate::{
-    device::{Cpu, Device},
+    device::Device,
     nn::{Forward, Module},
     prelude::{Vs, PREFIX},
     shape::{Rank1, Rank2},
@@ -19,6 +19,8 @@ use crate::device::Cpu;
 
 #[cfg(feature = "cuda")]
 use crate::device::Cuda;
+
+#[cfg(feature = "cuda")]
 pub struct Linear<
     const I: usize,
     const O: usize,
@@ -31,7 +33,6 @@ pub struct Linear<
     __device: PhantomData<D>,
 }
 
-#[cfg(feature = "cuda")]
 #[cfg(not(feature = "cuda"))]
 pub struct Linear<
     const I: usize,

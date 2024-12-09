@@ -40,9 +40,9 @@ pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cuda> {
 #[derive(Clone)]
 pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cpu> {
     pub(crate) repr: candle_core::Tensor,
-    __shape: PhantomData<S>,
-    __kind: PhantomData<K>,
-    __device: PhantomData<D>,
+    pub(crate) __shape: PhantomData<S>,
+    pub(crate) __kind: PhantomData<K>,
+    pub(crate) __device: PhantomData<D>,
 }
 
 pub(crate) trait FromCandleTensor {

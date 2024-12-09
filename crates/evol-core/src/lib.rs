@@ -29,6 +29,7 @@ pub use evol_macros::*;
 pub mod candle {
     pub use candle_core;
     pub use candle_nn;
+    #[cfg(feature = "onnx")]
     pub use candle_onnx;
     pub use candle_transformers;
 }

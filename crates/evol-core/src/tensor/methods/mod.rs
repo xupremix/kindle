@@ -5,5 +5,6 @@ mod matmul;
 mod reshape;
 mod squeeze;
 mod t;
+mod to_scalar;
 mod transpose;
 mod unsqueeze;

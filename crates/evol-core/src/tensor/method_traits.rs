@@ -72,3 +72,8 @@ pub trait Matmul<Src: Shape>: Shape {
 pub trait BroadcastMatmul<Src: Shape, Dst: Shape>: Shape {
     const BROADCAST_MATMUL_CHECK: ();
 }
+
+pub trait ToScalar: Shape {
+    const TO_SCALAR_CHECK: () = assert!(Self::NELEMS == 1, "The tensor must have only 1 element");
+}
+impl<S: Shape> ToScalar for S {}

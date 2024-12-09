@@ -21,11 +21,13 @@ license = "MIT or Apache-2.0"
 [features]
 default = []
 
-all = ["nightly", "cuda", "half"]
+non-nightly = ["cuda", "half", "onnx"]
+all = ["nightly", "cuda", "half", "onnx"]
 
 nightly = ["evol-core/nightly"]
 half = ["evol-core/half"]
 cuda = ["evol-core/cuda"]
+onnx = ["evol-core/onnx"]
 
 [dependencies.evol-core]
 path = "crates/evol-core"

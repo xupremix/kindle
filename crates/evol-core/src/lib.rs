@@ -1,6 +1,7 @@
 #![allow(private_bounds)]
 #![allow(path_statements)]
 #![allow(unused_imports)]
+#![allow(clippy::self_named_constructors)]
 
 pub mod device;
 pub mod kind;
@@ -15,9 +16,10 @@ pub mod prelude {
     pub use device::*;
     pub use evol_macros::*;
     pub use kind::*;
+    pub use nn::prelude::*;
     pub use nn::*;
     pub use shape::*;
-    pub use tensor::method_traits::*;
+    pub use tensor::prelude::*;
     pub use tensor::*;
     pub use utils::CmpOp;
 }

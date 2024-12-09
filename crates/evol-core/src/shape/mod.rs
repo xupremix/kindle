@@ -5,6 +5,7 @@ use evol_macros::shape;
 
 pub use candle_core::Shape as CandleShape;
 
+use crate::nn::Forward;
 use crate::tensor::method_traits::*;
 
 use crate::kind::Kind;

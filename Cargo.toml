@@ -32,10 +32,10 @@ path = "crates/evol-core"
 version = "0.1.0"
 
 [workspace.dependencies]
-proc-macro2 = "1.0.89"
+proc-macro2 = "1.0.92"
 quote = "1.0.37"
-syn = {version = "2.0.87", features = ["full"]}
+syn = {version = "2.0.90", features = ["full"]}
 serde = {version = "1.0.215", features = ["derive"]}
-candle-onnx = "0.8.0"
+candle-onnx = "0.8.1"
 safetensors = "0.4.5"
 itertools = "0.13.0"

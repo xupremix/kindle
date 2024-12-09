@@ -1,0 +1,5 @@
+[alias]
+t = ["test", "--workspace", "--features", "non-nightly"]
+ta = ["test", "--workspace", "--all-features"]
+h = ["hack", "t", "--workspace", "--feature-powerset", "--no-dev-deps"]
+d = ["doc", "--all-features", "--open"]

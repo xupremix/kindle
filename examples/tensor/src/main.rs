@@ -9,6 +9,7 @@ fn main() {
     let model = Custom::build(&vs, Default::default());
     let mut sgd = Sgd::new(vm.all_vars(), 0.01);
     let loss = model.forward(&t);
-    println!("{}", loss);
     sgd.backward_step(&loss);
+
+    println!("{}", loss);
 }

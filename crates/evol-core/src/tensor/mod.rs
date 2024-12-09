@@ -45,6 +45,29 @@ pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cpu> {
     __device: PhantomData<D>,
 }
 
+pub(crate) trait FromCandleTensor {
+    fn from_candle_tensor(repr: candle_core::Tensor) -> Self;
+}
+
+impl<S: Shape, K: Kind, D: Device> FromCandleTensor for Tensor<S, K, D> {
+    fn from_candle_tensor(repr: candle_core::Tensor) -> Self {
+        Self {
+            repr,
+            ..Default::default()
+        }
+    }
+}
+
+pub trait ToCandleTensor {
+    fn to_candle_tensor(&self) -> &candle_core::Tensor;
+}
+
+impl<S: Shape, K: Kind, D: Device> ToCandleTensor for Tensor<S, K, D> {
+    fn to_candle_tensor(&self) -> &candle_core::Tensor {
+        &self.repr
+    }
+}
+
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
     pub const fn shape_rank() -> usize {
         S::DIMS

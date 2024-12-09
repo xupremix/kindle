@@ -1,3 +1,5 @@
+use std::sync::atomic::AtomicU32;
+
 use candle_core::WithDType;
 use candle_nn::VarBuilder;
 pub use candle_nn::VarMap;
@@ -9,6 +11,8 @@ use crate::device::Cpu;
 
 #[cfg(feature = "cuda")]
 use crate::device::Cuda;
+
+pub(crate) static PREFIX: AtomicU32 = AtomicU32::new(0);
 
 #[cfg(feature = "cuda")]
 #[derive(Clone)]
@@ -33,6 +37,10 @@ impl<'a, K: WithDType, D: Device> Vs<'a, K, D> {
             __kind: std::marker::PhantomData,
             __device: std::marker::PhantomData,
         }
+    }
+
+    pub fn repr(&self) -> &VarBuilder {
+        &self.repr
     }
 
     /// alias for push_prefix

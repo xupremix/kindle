@@ -9,7 +9,7 @@ use candle_nn::Module as _;
 use crate::{
     device::{Cpu, Device},
     nn::{Forward, Module},
-    prelude::Vs,
+    prelude::{Vs, PREFIX},
     shape::{Rank1, Rank2},
     tensor::Tensor,
 };
@@ -108,7 +108,7 @@ impl<const I: usize, const O: usize, const BIAS: bool, K: WithDType, D: Device> 
 }
 
 impl<const I: usize, const O: usize, const B: bool, S: Forward<I, O>, K: WithDType, D: Device>
-    Module<&Tensor<S, K, D>> for Linear<I, O, B, K, D>
+    Module<Tensor<S, K, D>> for Linear<I, O, B, K, D>
 {
     type Output = Tensor<S::ForwardShape, K, D>;
 

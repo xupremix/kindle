@@ -1,6 +1,6 @@
 #![allow(private_bounds)]
 #![allow(path_statements)]
-#![allow(unused_imports)]
+// #![allow(unused_imports)]
 #![allow(clippy::self_named_constructors)]
 
 pub mod device;

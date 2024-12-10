@@ -1,6 +1,5 @@
 #![allow(private_bounds)]
 #![allow(path_statements)]
-// #![allow(unused_imports)]
 #![allow(clippy::self_named_constructors)]
 
 pub mod device;
@@ -15,7 +14,7 @@ pub mod prelude {
 
     pub use device::*;
     pub use evol_macros::*;
-    pub use evol_macros::*;
+
     pub use kind::*;
     pub use nn::prelude::*;
     pub use nn::*;

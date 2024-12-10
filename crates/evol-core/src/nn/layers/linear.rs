@@ -1,5 +1,5 @@
 use std::{
-    fmt::{Debug, Display},
+    fmt::Debug,
     marker::PhantomData,
 };
 
@@ -9,7 +9,7 @@ use candle_nn::Module as _;
 use crate::{
     device::Device,
     nn::{Forward, Module},
-    prelude::{Vs, PREFIX},
+    prelude::Vs,
     shape::{Rank1, Rank2},
     tensor::Tensor,
 };

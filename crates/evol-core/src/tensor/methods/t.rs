@@ -1,6 +1,6 @@
 use crate::{
     prelude::T,
-    tensor::{Device, Kind, Shape, Tensor},
+    tensor::{Device, Kind, Tensor},
 };
 
 impl<S: T, K: Kind, D: Device> Tensor<S, K, D> {

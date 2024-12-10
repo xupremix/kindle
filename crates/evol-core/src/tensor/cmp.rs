@@ -1,4 +1,4 @@
-use candle_core::{op::CmpOp, InplaceOp1};
+use candle_core::op::CmpOp;
 use safetensors::View;
 
 use crate::tensor::{Device, Kind, Shape, Tensor};

@@ -1,6 +1,6 @@
 use crate::{
     kind::ToF64,
-    tensor::{Device, Kind, Shape, Tensor},
+    tensor::{Device, Shape, Tensor},
 };
 
 impl<S: Shape, K: candle_core::FloatDType, D: Device> Tensor<S, K, D> {

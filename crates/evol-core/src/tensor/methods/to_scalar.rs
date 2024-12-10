@@ -1,7 +1,7 @@
 use crate::{
     prelude::ToScalar,
     shape::Scalar,
-    tensor::{Device, Kind, Shape, Tensor},
+    tensor::{Device, Kind, Tensor},
 };
 
 impl<K: Kind, D: Device> Tensor<Scalar, K, D> {

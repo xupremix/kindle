@@ -15,6 +15,7 @@ pub mod prelude {
 
     pub use device::*;
     pub use evol_macros::*;
+    pub use evol_macros::*;
     pub use kind::*;
     pub use nn::prelude::*;
     pub use nn::*;

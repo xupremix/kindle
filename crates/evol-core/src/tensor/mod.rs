@@ -5,14 +5,13 @@ use std::{
     marker::PhantomData,
 };
 
-use crate::{
-    device::{Cpu, Device},
-    kind::Kind,
-    shape::Shape,
-};
+use crate::{device::Device, kind::Kind, shape::Shape};
 
 #[cfg(feature = "cuda")]
 use crate::device::Cuda;
+
+#[cfg(not(feature = "cuda"))]
+use crate::device::Cpu;
 
 mod broadcast;
 mod cmp;

@@ -12,9 +12,9 @@ pub(crate) mod utils;
 pub mod prelude {
     use super::*;
 
-    pub use device::*;
     pub use evol_macros::*;
 
+    pub use device::*;
     pub use kind::*;
     pub use nn::prelude::*;
     pub use nn::*;
@@ -24,12 +24,13 @@ pub mod prelude {
     pub use utils::CmpOp;
 }
 
-pub use evol_macros::*;
+pub use evol_macros as macros;
 
 pub mod candle {
     pub use candle_core;
     pub use candle_nn;
+    pub use candle_transformers;
+
     #[cfg(feature = "onnx")]
     pub use candle_onnx;
-    pub use candle_transformers;
 }

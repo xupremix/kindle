@@ -77,3 +77,8 @@ pub trait ToScalar: Shape {
     const TO_SCALAR_CHECK: () = assert!(Self::NELEMS == 1, "The tensor must have only 1 element");
 }
 impl<S: Shape> ToScalar for S {}
+
+pub trait Indexer<S: Shape, const KEEP_DIM: bool> {
+    type IndexShape: Shape;
+    fn indexes() -> &'static [usize];
+}

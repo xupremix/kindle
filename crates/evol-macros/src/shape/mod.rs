@@ -5,6 +5,7 @@ use quote::quote;
 use syn::Ident;
 
 mod arg;
+mod indexer;
 mod methods;
 
 pub(crate) fn shape(input: TokenStream) -> TokenStream {
@@ -83,6 +84,7 @@ pub(crate) fn shape(input: TokenStream) -> TokenStream {
     };
 
     let methods = methods::methods(dims, &name, &idents, at_tk);
+    let indexer = indexer::indexer(dims, &idents, at_tk);
 
     quote! {
         #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -108,6 +110,8 @@ pub(crate) fn shape(input: TokenStream) -> TokenStream {
         }
 
         #methods
+
+        #indexer
 
     }
     .into()

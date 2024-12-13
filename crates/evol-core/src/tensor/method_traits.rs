@@ -91,3 +91,8 @@ pub trait Get<const N: usize>: Shape {
     const GET_CHECK: ();
     type GetShape: Shape;
 }
+
+pub trait GetOnDim<const DIM: usize, const N: usize>: Shape {
+    const GET_ON_DIM_CHECK: ();
+    type GetOnDimShape: Shape;
+}

@@ -10,6 +10,7 @@ mod flatten;
 mod flatten_from;
 mod forward;
 mod get;
+mod get_on_dim;
 mod indexops;
 mod matmul;
 mod squeeze_dim;
@@ -37,6 +38,7 @@ pub(crate) fn methods(
     let broadcast_matmul = broadcast_matmul::broadcast_matmul(dims, name, idents, at_tk);
     let forward = forward::forward(dims, name, idents, at_tk);
     let get = get::get(dims, name, idents, at_tk);
+    let get_on_dim = get_on_dim::get_on_dim(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -53,5 +55,6 @@ pub(crate) fn methods(
         #forward
         #indexops
         #get
+        #get_on_dim
     }
 }

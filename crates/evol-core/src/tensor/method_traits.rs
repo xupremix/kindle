@@ -86,3 +86,8 @@ pub trait Indexer<S: Shape, const KEEP_DIM: bool> {
 pub trait IndexOp<const DIM: usize, const KEEP_DIM: bool>: Shape {
     type IndexOpShape: Shape;
 }
+
+pub trait Get<const N: usize>: Shape {
+    const GET_CHECK: ();
+    type GetShape: Shape;
+}

@@ -2,6 +2,8 @@
 #![allow(path_statements)]
 #![allow(clippy::self_named_constructors)]
 
+// TODO: ADD DOCUMENTATION
+
 pub mod device;
 pub mod kind;
 pub mod nn;

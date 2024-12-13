@@ -1,4 +1,5 @@
 mod flatten;
+mod get;
 mod indexops;
 mod matmul;
 mod mean;

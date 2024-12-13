@@ -1,6 +1,5 @@
 Methods
 
-    broadcast_matmul
     broadcast_maximum
     broadcast_minimum
     broadcast_pow
@@ -67,17 +66,10 @@ Methods
     is_variable
     layout
     log_sum_exp
-    max
-    max_keepdim
     max_pool2d
     max_pool2d_with_stride
     maximum
-    mean
-    mean_all
-    mean_keepdim
     meshgrid
-    min
-    min_keepdim
     minimum
     neg
     normalize_axis
@@ -105,9 +97,6 @@ Methods
     storage_and_layout
     strided_blocks
     strided_index
-    sum
-    sum_all
-    sum_keepdim
     to_scalar
     to_vec0
     to_vec1
@@ -117,8 +106,6 @@ Methods
     transpose
     upsample_nearest1d
     upsample_nearest2d
-    var
-    var_keepdim
     where_cond
     write_bytes
     write_npy

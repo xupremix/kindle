@@ -2,7 +2,7 @@ use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use syn::Ident;
 
-pub(crate) fn argmax(
+pub(crate) fn indexops(
     dims: usize,
     name: &TokenStream,
     dim_idents: &[Ident],
@@ -18,13 +18,13 @@ pub(crate) fn argmax(
         return quote! {
             impl<
                 const D0: usize,
-            > #path Argmax<0, false> for Rank1<D0> {
-                type ArgmaxShape = Scalar;
+            > #path IndexOp<0, false> for Rank1<D0> {
+                type IndexOpShape = Scalar;
             }
             impl<
                 const D0: usize,
-            > #path Argmax<0, true> for Rank1<D0> {
-                type ArgmaxShape = Rank1<1>;
+            > #path IndexOp<0, true> for Rank1<D0> {
+                type IndexOpShape = Rank1<1>;
             }
         };
     }
@@ -51,8 +51,8 @@ pub(crate) fn argmax(
                 out.push(quote! {
                     impl<
                         #(#const_dims)*
-                    > #path Argmax<#i, true> for #name<#(#dim_idents),*> {
-                        type ArgmaxShape = #name<#(#new_dim_idents)*>;
+                    > #path IndexOp<#i, true> for #name<#(#dim_idents),*> {
+                        type IndexOpShape = #name<#(#new_dim_idents)*>;
                     }
                 });
             } else {
@@ -68,8 +68,8 @@ pub(crate) fn argmax(
                 out.push(quote! {
                     impl<
                         #(#const_dims)*
-                    > #path Argmax<#i, false> for #name<#(#dim_idents),*> {
-                        type ArgmaxShape = #new_name<#(#new_dim_idents)*>;
+                    > #path IndexOp<#i, false> for #name<#(#dim_idents),*> {
+                        type IndexOpShape = #new_name<#(#new_dim_idents)*>;
                     }
                 });
             }

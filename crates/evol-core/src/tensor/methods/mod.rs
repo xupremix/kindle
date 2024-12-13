@@ -1,6 +1,5 @@
-mod argmax;
-mod argmin;
 mod flatten;
+mod indexops;
 mod matmul;
 mod mean;
 mod reshape;

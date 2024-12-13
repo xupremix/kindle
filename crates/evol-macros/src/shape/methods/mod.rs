@@ -2,8 +2,6 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::Ident;
 
-mod argmax;
-mod argmin;
 mod broadcast;
 mod broadcast_as;
 mod broadcast_left;
@@ -11,6 +9,7 @@ mod broadcast_matmul;
 mod flatten;
 mod flatten_from;
 mod forward;
+mod indexops;
 mod matmul;
 mod squeeze_dim;
 mod t;
@@ -32,8 +31,7 @@ pub(crate) fn methods(
     let t = t::t(dims, name, idents, at_tk);
     let flatten = flatten::flatten(dims, name, idents, at_tk);
     let flatten_from = flatten_from::flatten_from(dims, name, idents, at_tk);
-    let argmax = argmax::argmax(dims, name, idents, at_tk);
-    let argmin = argmin::argmin(dims, name, idents, at_tk);
+    let indexops = indexops::indexops(dims, name, idents, at_tk);
     let matmul = matmul::matmul(dims, name, idents, at_tk);
     let broadcast_matmul = broadcast_matmul::broadcast_matmul(dims, name, idents, at_tk);
     let forward = forward::forward(dims, name, idents, at_tk);
@@ -49,9 +47,8 @@ pub(crate) fn methods(
         #t
         #flatten
         #flatten_from
-        #argmax
-        #argmin
         #matmul
         #forward
+        #indexops
     }
 }

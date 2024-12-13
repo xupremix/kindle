@@ -82,3 +82,7 @@ pub trait Indexer<S: Shape, const KEEP_DIM: bool> {
     type IndexShape: Shape;
     fn indexes() -> &'static [usize];
 }
+
+pub trait IndexOp<const DIM: usize, const KEEP_DIM: bool>: Shape {
+    type IndexOpShape: Shape;
+}

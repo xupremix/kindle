@@ -15,8 +15,12 @@ macro_rules! wrap {
     };
 }
 
+// TODO: CHECK IMPL WHEN DTYPE != FLOAT
+
 wrap! {
+    neg
     abs
+    exp
     cos
     erf
     floor
@@ -30,4 +34,5 @@ wrap! {
     sqr
     sqrt
     tanh
+    ceil
 }

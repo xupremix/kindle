@@ -5,6 +5,7 @@ mod matmul;
 mod mean;
 mod reshape;
 mod squeeze;
+mod stack;
 mod sum;
 mod t;
 mod to_scalar;

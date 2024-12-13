@@ -14,6 +14,7 @@ mod get_on_dim;
 mod indexops;
 mod matmul;
 mod squeeze_dim;
+mod stack;
 mod t;
 mod transpose;
 mod unsqueeze;
@@ -39,6 +40,7 @@ pub(crate) fn methods(
     let forward = forward::forward(dims, name, idents, at_tk);
     let get = get::get(dims, name, idents, at_tk);
     let get_on_dim = get_on_dim::get_on_dim(dims, name, idents, at_tk);
+    let stack = stack::stack(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -56,5 +58,6 @@ pub(crate) fn methods(
         #indexops
         #get
         #get_on_dim
+        #stack
     }
 }

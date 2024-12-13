@@ -47,15 +47,12 @@ Methods
     dims5
     elem_count
     embedding
-    exp
     expand
     eye
     force_contiguous
     from_iter
     from_raw_buffer
     gather
-    get
-    get_on_dim
     id
     index_add
     index_select
@@ -71,7 +68,6 @@ Methods
     maximum
     meshgrid
     minimum
-    neg
     normalize_axis
     pad_with_same
     pad_with_zeros
@@ -103,7 +99,6 @@ Methods
     to_vec2
     to_vec3
     track_op
-    transpose
     upsample_nearest1d
     upsample_nearest2d
     where_cond

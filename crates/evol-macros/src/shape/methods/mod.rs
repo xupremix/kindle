@@ -6,6 +6,7 @@ mod broadcast;
 mod broadcast_as;
 mod broadcast_left;
 mod broadcast_matmul;
+mod cat;
 mod flatten;
 mod flatten_from;
 mod forward;
@@ -41,6 +42,7 @@ pub(crate) fn methods(
     let get = get::get(dims, name, idents, at_tk);
     let get_on_dim = get_on_dim::get_on_dim(dims, name, idents, at_tk);
     let stack = stack::stack(dims, name, idents, at_tk);
+    let cat = cat::cat(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -59,5 +61,6 @@ pub(crate) fn methods(
         #get
         #get_on_dim
         #stack
+        #cat
     }
 }

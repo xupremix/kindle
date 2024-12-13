@@ -100,3 +100,7 @@ pub trait GetOnDim<const DIM: usize, const N: usize>: Shape {
 pub trait Stack<const DIM: usize, const N: usize>: Shape {
     type StackShape: Shape;
 }
+
+pub trait Cat<const DIM: usize, const N: usize, Dst: Shape>: Shape {
+    const CAT_CHECK: ();
+}

@@ -4,7 +4,6 @@ Methods
     broadcast_minimum
     broadcast_pow
 
-    affine
     inplace_op1
     inplace_op2
     inplace_op3
@@ -23,7 +22,6 @@ Methods
     avg_pool2d
     avg_pool2d_with_stride
     backward
-    ceil
     chunk
     clamp
     cmp
@@ -72,7 +70,6 @@ Methods
     pad_with_zeros
     permute
     pow
-    powf
     read_npy
     read_npz
     read_npz_by_name
@@ -105,8 +102,6 @@ Methods
     write_npz
     tril2
     triu2
-    elu
-    narrow
 
 Trait Implementations
 

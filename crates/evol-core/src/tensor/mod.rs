@@ -16,6 +16,7 @@ use crate::device::Cpu;
 mod broadcast;
 mod cmp;
 mod gen;
+mod math;
 mod methods;
 mod ops;
 mod wrap;

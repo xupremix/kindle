@@ -109,3 +109,8 @@ pub trait Narrow<const DIM: usize, const START: usize, const LEN: usize>: Shape 
     const NARROW_CHECK: ();
     type NarrowShape: Shape;
 }
+
+pub trait Chunk<const DIM: usize, const NELEMS: usize>: Shape {
+    const CHUNK_CHECK: ();
+    type ChunkShape: Shape;
+}

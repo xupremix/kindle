@@ -7,6 +7,7 @@ mod broadcast_as;
 mod broadcast_left;
 mod broadcast_matmul;
 mod cat;
+mod chunk;
 mod flatten;
 mod flatten_from;
 mod forward;
@@ -45,6 +46,7 @@ pub(crate) fn methods(
     let stack = stack::stack(dims, name, idents, at_tk);
     let cat = cat::cat(dims, name, idents, at_tk);
     let narrow = narrow::narrow(dims, name, idents, at_tk);
+    let chunk = chunk::chunk(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -65,5 +67,6 @@ pub(crate) fn methods(
         #stack
         #cat
         #narrow
+        #chunk
     }
 }

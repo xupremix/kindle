@@ -1,4 +1,5 @@
 mod cat;
+mod chunk;
 mod flatten;
 mod get;
 mod indexops;

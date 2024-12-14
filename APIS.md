@@ -22,7 +22,6 @@ Methods
     avg_pool2d
     avg_pool2d_with_stride
     backward
-    chunk
     clamp
     cmp
     contiguous

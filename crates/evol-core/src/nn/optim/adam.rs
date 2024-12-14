@@ -4,14 +4,22 @@ use candle_nn::Optimizer;
 use super::Backward;
 use crate::{device::Device, shape::Shape, tensor::Tensor};
 
-pub struct Sgd {
-    repr: candle_nn::SGD,
+pub use candle_nn::ParamsAdamW;
+
+pub struct AdamW {
+    repr: candle_nn::AdamW,
 }
 
-impl Sgd {
+impl AdamW {
     pub fn new(vars: Vec<Var>, lr: f64) -> Self {
         Self {
-            repr: candle_nn::SGD::new(vars, lr).unwrap(),
+            repr: candle_nn::AdamW::new_lr(vars, lr).unwrap(),
+        }
+    }
+
+    pub fn new_with_params(vars: Vec<Var>, params: ParamsAdamW) -> Self {
+        Self {
+            repr: candle_nn::AdamW::new(vars, params).unwrap(),
         }
     }
 
@@ -23,17 +31,25 @@ impl Sgd {
         self.repr.set_learning_rate(lr)
     }
 
+    pub fn set_params(&mut self, params: ParamsAdamW) {
+        self.repr.set_params(params)
+    }
+
+    pub fn params(&self) -> &ParamsAdamW {
+        self.repr.params()
+    }
+
     // TODO: look into the GradStore type and how to implement it
 }
 
-impl<S: Shape, K: WithDType, D: Device> Backward<Tensor<S, K, D>> for Sgd {
+impl<S: Shape, K: WithDType, D: Device> Backward<Tensor<S, K, D>> for AdamW {
     const BACKWARD_CHECK: () = assert!(
         S::NELEMS == 1,
         "The loss must be a Scalar or a Tensor with only 1 element"
     );
 
     fn backward_step(&mut self, loss: &Tensor<S, K, D>) {
-        <Sgd as Backward<Tensor<S, K, D>>>::BACKWARD_CHECK;
+        <AdamW as Backward<Tensor<S, K, D>>>::BACKWARD_CHECK;
         self.repr.backward_step(&loss.repr).unwrap();
     }
 }

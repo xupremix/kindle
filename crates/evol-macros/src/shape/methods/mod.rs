@@ -14,6 +14,7 @@ mod get;
 mod get_on_dim;
 mod indexops;
 mod matmul;
+mod narrow;
 mod squeeze_dim;
 mod stack;
 mod t;
@@ -43,6 +44,7 @@ pub(crate) fn methods(
     let get_on_dim = get_on_dim::get_on_dim(dims, name, idents, at_tk);
     let stack = stack::stack(dims, name, idents, at_tk);
     let cat = cat::cat(dims, name, idents, at_tk);
+    let narrow = narrow::narrow(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -62,5 +64,6 @@ pub(crate) fn methods(
         #get_on_dim
         #stack
         #cat
+        #narrow
     }
 }

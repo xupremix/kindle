@@ -23,7 +23,6 @@ Methods
     avg_pool2d
     avg_pool2d_with_stride
     backward
-    cat
     ceil
     chunk
     clamp
@@ -89,7 +88,6 @@ Methods
     slice_scatter0
     slice_set
     sort_last_dim
-    stack
     storage_and_layout
     strided_blocks
     strided_index

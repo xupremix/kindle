@@ -104,3 +104,8 @@ pub trait Stack<const DIM: usize, const N: usize>: Shape {
 pub trait Cat<const DIM: usize, const N: usize, Dst: Shape>: Shape {
     const CAT_CHECK: ();
 }
+
+pub trait Narrow<const DIM: usize, const START: usize, const LEN: usize>: Shape {
+    const NARROW_CHECK: ();
+    type NarrowShape: Shape;
+}

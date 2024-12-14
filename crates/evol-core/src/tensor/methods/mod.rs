@@ -4,6 +4,7 @@ mod get;
 mod indexops;
 mod matmul;
 mod mean;
+mod narrow;
 mod reshape;
 mod squeeze;
 mod stack;

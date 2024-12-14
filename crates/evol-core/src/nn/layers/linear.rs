@@ -1,7 +1,4 @@
-use std::{
-    fmt::Debug,
-    marker::PhantomData,
-};
+use std::{fmt::Debug, marker::PhantomData};
 
 use candle_core::WithDType;
 use candle_nn::Module as _;

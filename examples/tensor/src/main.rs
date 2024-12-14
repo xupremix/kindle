@@ -1,8 +1,9 @@
-// use evol::candle::candle_core;
+// use evol::candle::candle_nn::{self};
 use evol::prelude::*;
 
 fn main() {
-    let t: Tensor<Rank3<3, 4, 6>> = Tensor::ones();
-    let ris: Vec<Tensor<Rank3<3, 4, 2>>> = t.chunk::<2, 2>();
-    println!("{:#?}", ris);
+    let vm = VarMap::new();
+    let vs: Vs = Vs::from_varmap(&vm);
+    let conv2d: Conv2d<10, 20> = Conv2d::conv2d(&vs, "hello", Default::default());
+    println!("{:#?}", conv2d);
 }

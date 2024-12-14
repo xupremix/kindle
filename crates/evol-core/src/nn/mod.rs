@@ -13,6 +13,7 @@ pub mod vs;
 
 pub mod prelude {
     pub use super::build::*;
+    pub use super::layers::conv2d::*;
     pub use super::layers::linear::*;
     pub use super::optim::adam::*;
     pub use super::optim::sgd::*;

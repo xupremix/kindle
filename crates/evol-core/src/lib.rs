@@ -1,6 +1,8 @@
 #![allow(private_bounds)]
 #![allow(path_statements)]
 #![allow(clippy::self_named_constructors)]
+#![allow(incomplete_features)]
+#![cfg_attr(feature = "nightly", feature(generic_const_exprs))]
 
 // TODO: ADD DOCUMENTATION
 

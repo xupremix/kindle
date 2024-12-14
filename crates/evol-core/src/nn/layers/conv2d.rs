@@ -5,9 +5,9 @@ use candle_nn::Module as _;
 
 use crate::{
     device::Device,
-    nn::{Forward, Module},
+    nn::Module,
     prelude::Vs,
-    shape::{Rank1, Rank2, Rank4},
+    shape::{Rank1, Rank4},
     tensor::Tensor,
 };
 
@@ -133,6 +133,31 @@ impl<
             write!(f, "{:#?}", self.repr)
         } else {
             write!(f, "{:?}", self.repr)
+        }
+    }
+}
+
+impl<
+        const D0: usize,
+        const D1: usize,
+        const D2: usize,
+        const D3: usize,
+        const O: usize,
+        const KERNEL: usize,
+        const BIAS: bool,
+        K: WithDType,
+        D: Device,
+    > Module<Tensor<Rank4<D0, D1, D2, D3>, K, D>> for Conv2d<D1, O, KERNEL, BIAS, K, D>
+where
+    [(); D2 + 1 - KERNEL]: Sized,
+    [(); D3 + 1 - KERNEL]: Sized,
+{
+    type Output = Tensor<Rank4<D0, O, { D2 + 1 - KERNEL }, { D3 + 1 - KERNEL }>, K, D>;
+
+    fn forward(&self, xs: &Tensor<Rank4<D0, D1, D2, D3>, K, D>) -> Self::Output {
+        Tensor {
+            repr: self.repr.forward(&xs.repr).unwrap(),
+            ..Default::default()
         }
     }
 }

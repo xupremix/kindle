@@ -7,6 +7,8 @@ use crate::tensor::ToCandleTensor;
 
 use super::{vs::Vs, Module};
 
+#[cfg(feature = "nightly")]
+mod conv2d;
 mod linear;
 
 pub struct Model<M> {
@@ -16,16 +18,16 @@ pub struct Model<M> {
 
 pub trait ModelBuilder: Sized {
     type Config;
-    fn build(vs: &Vs, c: Self::Config) -> Model<Self> {
+    fn build(vs: &Vs, cfg: Self::Config) -> Model<Self> {
         let repr = seq();
-        let repr = Self::step(vs, c, repr);
+        let repr = Self::step(vs, cfg, repr);
         Model {
             repr,
             module: PhantomData,
         }
     }
 
-    fn step(vs: &Vs, c: Self::Config, seq: Sequential) -> Sequential;
+    fn step(vs: &Vs, cfg: Self::Config, seq: Sequential) -> Sequential;
 }
 
 impl<T, M: Module<T>> Module<T> for Model<M>

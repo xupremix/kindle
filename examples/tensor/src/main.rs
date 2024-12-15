@@ -1,6 +1,8 @@
 #![allow(incomplete_features)]
 #![feature(generic_const_exprs)]
 
+type Custom = (Linear<10, 32>, Conv2d<20, 30>, Linear<30, 40>);
+
 // use evol::candle::candle_nn::Module as _;
 // use evol::candle::{candle_core, candle_nn};
 use evol::prelude::*;
@@ -8,9 +10,8 @@ use evol::prelude::*;
 fn main() {
     let vm = VarMap::new();
     let vs: Vs = Vs::from_varmap(&vm);
-    let t: Tensor<Rank4<3, 4, 5, 6>> = Tensor::ones();
-    let conv: Conv2d<4, 5> = Conv2d::conv2d(&vs, "hello", Default::default());
-    let ris = conv.forward(&t);
-    // let ris: Tensor<Rank4<3, 5, 3, 4>> = conv.forward(&t);
-    println!("{}", ris);
+    let t: Tensor<Rank4<3, 20, 5, 10>> = Tensor::ones();
+    let model = Custom::build(&vs, Default::default());
+    let xs = model.forward(&t);
+    println!("{}", xs);
 }

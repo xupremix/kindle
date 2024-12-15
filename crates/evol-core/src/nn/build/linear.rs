@@ -28,9 +28,9 @@ impl<const I: usize, const O: usize, const BIAS: bool, K: WithDType, D: Device> 
 
     fn step(
         vs: &crate::prelude::Vs,
-        c: Self::Config,
+        cfg: Self::Config,
         seq: candle_nn::Sequential,
     ) -> candle_nn::Sequential {
-        seq.add(candle_nn::linear_b(I, O, BIAS, vs.pp(c.0)).unwrap())
+        seq.add(candle_nn::linear_b(I, O, BIAS, vs.pp(cfg.0)).unwrap())
     }
 }

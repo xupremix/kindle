@@ -113,7 +113,7 @@ impl<
     > Conv2d<I, O, KERNEL, PADDING, STRIDE, DILATION, GROUPS, true, K, D>
 {
     pub fn new(
-        weight: Tensor<Rank4<O, I, KERNEL, KERNEL>, K, D>,
+        weight: Tensor<Rank4<O, { I / GROUPS }, KERNEL, KERNEL>, K, D>,
         bias: Tensor<Rank1<O>, K, D>,
     ) -> Self {
         let cfg = Conv2dConfig {
@@ -149,7 +149,7 @@ impl<
         D: Device,
     > Conv2d<I, O, KERNEL, PADDING, STRIDE, DILATION, GROUPS, false, K, D>
 {
-    pub fn new(weight: Tensor<Rank4<O, I, KERNEL, KERNEL>, K, D>) -> Self {
+    pub fn new(weight: Tensor<Rank4<O, { I / GROUPS }, KERNEL, KERNEL>, K, D>) -> Self {
         let cfg = Conv2dConfig {
             padding: PADDING,
             stride: STRIDE,
@@ -211,6 +211,7 @@ impl<
     for Conv2d<CIN, O, KERNEL, PADDING, STRIDE, DILATION, GROUPS, BIAS, K, D>
 where
     [(); STRIDE]:,
+    [(); CIN / GROUPS]:,
     [(); (CIN % GROUPS == 0) as usize]:, // TODO: CHECK if it's necessary
     [(); (O % GROUPS == 0) as usize]:,   // TODO: CHECK if it's necessary
     [(); (HIN + 2 * PADDING - DILATION * (KERNEL - 1) - 1) / STRIDE + 1]:,

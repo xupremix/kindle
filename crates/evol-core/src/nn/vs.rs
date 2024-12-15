@@ -30,7 +30,7 @@ pub struct Vs<'a, K: WithDType = f32, D: Device = Cpu> {
     __device: std::marker::PhantomData<D>,
 }
 
-impl<'a, K: WithDType, D: Device> Vs<'a, K, D> {
+impl<K: WithDType, D: Device> Vs<'_, K, D> {
     pub fn from_varmap(vm: &VarMap) -> Self {
         Self {
             repr: candle_nn::VarBuilder::from_varmap(vm, K::DTYPE, &D::device()),

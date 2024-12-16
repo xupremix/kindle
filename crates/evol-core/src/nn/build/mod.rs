@@ -7,9 +7,11 @@ use crate::tensor::ToCandleTensor;
 
 use super::{vs::Vs, Module};
 
+mod activations;
 #[cfg(feature = "nightly")]
 mod conv2d;
 mod linear;
+mod tuple;
 
 pub struct Model<M> {
     repr: Sequential,
@@ -38,16 +40,5 @@ where
 
     fn forward(&self, xs: &T) -> Self::Output {
         M::Output::from_candle_tensor(self.repr.forward(xs.to_candle_tensor()).unwrap())
-    }
-}
-
-impl<M0: ModelBuilder, M1: ModelBuilder, M2: ModelBuilder> ModelBuilder for (M0, M1, M2) {
-    type Config = (M0::Config, M1::Config, M2::Config);
-
-    fn step(vs: &Vs, c: Self::Config, seq: Sequential) -> Sequential {
-        let (c0, c1, c2) = c;
-        let seq = M0::step(vs, c0, seq);
-        let seq = M1::step(vs, c1, seq);
-        M2::step(vs, c2, seq)
     }
 }

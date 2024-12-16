@@ -92,7 +92,7 @@ impl<
         self.repr.config()
     }
 
-    pub fn weight(&self) -> Tensor<Rank4<O, I, KERNEL, KERNEL>, K, D> {
+    pub fn weight(&self) -> Tensor<Rank4<O, { I / GROUPS }, KERNEL, KERNEL>, K, D> {
         Tensor {
             repr: self.repr.weight().clone(),
             ..Default::default()

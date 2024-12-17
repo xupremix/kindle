@@ -17,26 +17,13 @@ use crate::device::Cpu;
 #[cfg(feature = "cuda")]
 use crate::device::Cuda;
 
-#[cfg(feature = "cuda")]
 pub struct Linear<
     const I: usize,
     const O: usize,
     const BIAS: bool = true,
     K: WithDType = f32,
-    D: Device = Cuda,
-> {
-    repr: candle_nn::Linear,
-    __kind: PhantomData<K>,
-    __device: PhantomData<D>,
-}
-
-#[cfg(not(feature = "cuda"))]
-pub struct Linear<
-    const I: usize,
-    const O: usize,
-    const BIAS: bool = true,
-    K: WithDType = f32,
-    D: Device = Cpu,
+    #[cfg(feature = "cuda")] D: Device = Cuda,
+    #[cfg(not(feature = "cuda"))] D: Device = Cpu,
 > {
     repr: candle_nn::Linear,
     __kind: PhantomData<K>,

@@ -17,7 +17,6 @@ use crate::device::Cpu;
 #[cfg(feature = "cuda")]
 use crate::device::Cuda;
 
-#[cfg(feature = "cuda")]
 pub struct Conv2d<
     const I: usize,
     const O: usize,
@@ -28,25 +27,8 @@ pub struct Conv2d<
     const GROUPS: usize = 1,
     const BIAS: bool = true,
     K: WithDType = f32,
-    D: Device = Cuda,
-> {
-    repr: candle_nn::Conv2d,
-    __kind: PhantomData<K>,
-    __device: PhantomData<D>,
-}
-
-#[cfg(not(feature = "cuda"))]
-pub struct Conv2d<
-    const I: usize,
-    const O: usize,
-    const KERNEL: usize = 3,
-    const BIAS: bool = true,
-    const PADDING: usize = 0,
-    const STRIDE: usize = 1,
-    const DILATION: usize = 1,
-    const GROUPS: usize = 1,
-    K: WithDType = f32,
-    D: Device = Cpu,
+    #[cfg(feature = "cuda")] D: Device = Cuda,
+    #[cfg(not(feature = "cuda"))] D: Device = Cpu,
 > {
     repr: candle_nn::Conv2d,
     __kind: PhantomData<K>,

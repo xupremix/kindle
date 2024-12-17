@@ -14,17 +14,13 @@ use crate::device::Cuda;
 
 pub(crate) static PREFIX: AtomicU32 = AtomicU32::new(0);
 
-#[cfg(feature = "cuda")]
 #[derive(Clone)]
-pub struct Vs<'a, K: WithDType = f32, D: Device = Cuda> {
-    pub(crate) repr: VarBuilder<'a>,
-    __kind: std::marker::PhantomData<K>,
-    __device: std::marker::PhantomData<D>,
-}
-
-#[cfg(not(feature = "cuda"))]
-#[derive(Clone)]
-pub struct Vs<'a, K: WithDType = f32, D: Device = Cpu> {
+pub struct Vs<
+    'a,
+    K: WithDType = f32,
+    #[cfg(feature = "cuda")] D: Device = Cuda,
+    #[cfg(not(feature = "cuda"))] D: Device = Cpu,
+> {
     pub(crate) repr: VarBuilder<'a>,
     __kind: std::marker::PhantomData<K>,
     __device: std::marker::PhantomData<D>,

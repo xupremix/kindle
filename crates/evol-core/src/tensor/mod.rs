@@ -27,18 +27,13 @@ pub mod prelude {
     pub use super::method_traits::*;
 }
 
-#[cfg(feature = "cuda")]
 #[derive(Clone)]
-pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cuda> {
-    pub(crate) repr: candle_core::Tensor,
-    pub(crate) __shape: PhantomData<S>,
-    pub(crate) __kind: PhantomData<K>,
-    pub(crate) __device: PhantomData<D>,
-}
-
-#[cfg(not(feature = "cuda"))]
-#[derive(Clone)]
-pub struct Tensor<S: Shape, K: Kind = f32, D: Device = Cpu> {
+pub struct Tensor<
+    S: Shape,
+    K: Kind = f32,
+    #[cfg(feature = "cuda")] D: Device = Cuda,
+    #[cfg(not(feature = "cuda"))] D: Device = Cpu,
+> {
     pub(crate) repr: candle_core::Tensor,
     pub(crate) __shape: PhantomData<S>,
     pub(crate) __kind: PhantomData<K>,

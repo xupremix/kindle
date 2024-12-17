@@ -6,6 +6,7 @@
 
 // TODO: ADD DOCUMENTATION
 
+pub mod data;
 pub mod device;
 pub mod kind;
 pub mod nn;
@@ -18,6 +19,8 @@ pub mod prelude {
 
     pub use evol_macros::*;
 
+    pub use data::loader::*;
+    pub use data::*;
     pub use device::*;
     pub use kind::*;
     pub use nn::prelude::*;
@@ -31,10 +34,11 @@ pub mod prelude {
 pub use evol_macros as macros;
 
 pub mod candle {
-    pub use candle_core;
-    pub use candle_nn;
-    pub use candle_transformers;
+    pub use candle_core as core;
+    pub use candle_datasets as datasets;
+    pub use candle_nn as nn;
+    pub use candle_transformers as transformers;
 
     #[cfg(feature = "onnx")]
-    pub use candle_onnx;
+    pub use candle_onnx as onnx;
 }

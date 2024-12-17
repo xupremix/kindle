@@ -65,7 +65,7 @@ impl ModelBuilder for Silu {
         _cfg: Self::Config,
         seq: candle_nn::Sequential,
     ) -> candle_nn::Sequential {
-        seq.add_fn(move |xs| candle_nn::Activation::Silu.forward(xs))
+        seq.add_fn(candle_nn::ops::silu)
     }
 }
 
@@ -76,7 +76,7 @@ impl ModelBuilder for Sigmoid {
         _cfg: Self::Config,
         seq: candle_nn::Sequential,
     ) -> candle_nn::Sequential {
-        seq.add_fn(move |xs| candle_nn::Activation::Sigmoid.forward(xs))
+        seq.add_fn(candle_nn::ops::sigmoid)
     }
 }
 
@@ -87,7 +87,7 @@ impl ModelBuilder for HardSigmoid {
         _cfg: Self::Config,
         seq: candle_nn::Sequential,
     ) -> candle_nn::Sequential {
-        seq.add_fn(move |xs| candle_nn::Activation::HardSigmoid.forward(xs))
+        seq.add_fn(candle_nn::ops::hard_sigmoid)
     }
 }
 
@@ -98,7 +98,7 @@ impl ModelBuilder for Swiglu {
         _cfg: Self::Config,
         seq: candle_nn::Sequential,
     ) -> candle_nn::Sequential {
-        seq.add_fn(move |xs| candle_nn::Activation::Swiglu.forward(xs))
+        seq.add_fn(candle_nn::ops::swiglu)
     }
 }
 
@@ -154,5 +154,33 @@ impl ModelBuilder for GeluPytorchTanh {
         seq: candle_nn::Sequential,
     ) -> candle_nn::Sequential {
         seq.add_fn(|xs| candle_nn::Activation::GeluPytorchTanh.forward(xs))
+    }
+}
+
+// TODO: this requires changing the signature of the ModelBuilder trait
+// or just not allow it to be used as an operation since we don't have
+// access to the input shape
+//
+// impl<const DIM: usize> ModelBuilder for Softmax<DIM> {
+//     type Config = ();
+//
+//     fn step(
+//         vs: &crate::prelude::Vs,
+//         cfg: Self::Config,
+//         seq: candle_nn::Sequential,
+//     ) -> candle_nn::Sequential {
+//         todo!()
+//     }
+// }
+
+impl ModelBuilder for SoftmaxLastDim {
+    type Config = ();
+
+    fn step(
+        _vs: &crate::prelude::Vs,
+        _cfg: Self::Config,
+        seq: candle_nn::Sequential,
+    ) -> candle_nn::Sequential {
+        seq.add_fn(candle_nn::ops::softmax_last_dim)
     }
 }

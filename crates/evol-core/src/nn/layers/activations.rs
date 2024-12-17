@@ -1,4 +1,4 @@
-use crate::prelude::{Device, Kind, Module, Shape, Tensor};
+use crate::prelude::{Device, DimInRange, Kind, Module, Shape, Tensor};
 use candle_nn::Module as _;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -186,6 +186,53 @@ impl<S: Shape, K: Kind, D: Device> Module<Tensor<S, K, D>> for GeluPytorchTanh {
             repr: candle_nn::Activation::GeluPytorchTanh
                 .forward(&xs.repr)
                 .unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Softmax<const DIM: usize = 0>;
+
+impl<const DIM: usize, S: Shape, K: Kind, D: Device> Module<Tensor<S, K, D>> for Softmax<DIM>
+where
+    S: DimInRange<DIM>,
+{
+    type Output = Tensor<S, K, D>;
+    fn forward(&self, xs: &Tensor<S, K, D>) -> Self::Output {
+        S::DIM_IN_RANGE_CHECK;
+        Tensor {
+            repr: candle_nn::ops::softmax(&xs.repr, DIM).unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct LogSoftmax<const DIM: usize = 0>;
+
+impl<const DIM: usize, S: Shape, K: Kind, D: Device> Module<Tensor<S, K, D>> for LogSoftmax<DIM>
+where
+    S: DimInRange<DIM>,
+{
+    type Output = Tensor<S, K, D>;
+    fn forward(&self, xs: &Tensor<S, K, D>) -> Self::Output {
+        S::DIM_IN_RANGE_CHECK;
+        Tensor {
+            repr: candle_nn::ops::log_softmax(&xs.repr, DIM).unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct SoftmaxLastDim;
+
+impl<S: Shape, K: Kind, D: Device> Module<Tensor<S, K, D>> for SoftmaxLastDim {
+    type Output = Tensor<S, K, D>;
+    fn forward(&self, xs: &Tensor<S, K, D>) -> Self::Output {
+        Tensor {
+            repr: candle_nn::ops::softmax_last_dim(&xs.repr).unwrap(),
             ..Default::default()
         }
     }

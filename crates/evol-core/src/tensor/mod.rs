@@ -45,6 +45,7 @@ pub(crate) trait FromCandleTensor {
 }
 
 impl<S: Shape, K: Kind, D: Device> FromCandleTensor for Tensor<S, K, D> {
+    #[inline(always)]
     fn from_candle_tensor(repr: candle_core::Tensor) -> Self {
         Self {
             repr,
@@ -58,6 +59,7 @@ pub trait ToCandleTensor {
 }
 
 impl<S: Shape, K: Kind, D: Device> ToCandleTensor for Tensor<S, K, D> {
+    #[inline(always)]
     fn to_candle_tensor(&self) -> &candle_core::Tensor {
         &self.repr
     }

@@ -1,5 +1,13 @@
 use crate::shape::Shape;
 
+// TODO: Remove impl for Scalar shape
+pub trait DimInRange<const DIM: usize>: Shape {
+    const DIM_IN_RANGE_CHECK: ();
+}
+impl<const DIM: usize, S: Shape> DimInRange<DIM> for S {
+    const DIM_IN_RANGE_CHECK: () = assert!(DIM < S::DIMS, "Dimension index out of bounds");
+}
+
 pub trait Broadcast<Rhs: Shape, Dst: Shape>: Shape {
     const BROADCAST_CHECK: ();
 }

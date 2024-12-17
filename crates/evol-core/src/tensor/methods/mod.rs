@@ -1,3 +1,4 @@
+mod activations;
 mod cat;
 mod chunk;
 mod flatten;
@@ -7,7 +8,6 @@ mod matmul;
 mod mean;
 mod narrow;
 mod reshape;
-mod softmax;
 mod squeeze;
 mod stack;
 mod sum;

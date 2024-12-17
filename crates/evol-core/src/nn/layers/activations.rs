@@ -1,4 +1,4 @@
-use crate::prelude::{Device, DimInRange, Kind, Module, Shape, Tensor};
+use crate::prelude::{Device, DimInRange, Kind, Module, Shape, SwigluShape, Tensor};
 use candle_nn::Module as _;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -110,8 +110,11 @@ impl<S: Shape, K: Kind, D: Device> Module<Tensor<S, K, D>> for HardSigmoid {
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Swiglu;
 
-impl<S: Shape, K: Kind, D: Device> Module<Tensor<S, K, D>> for Swiglu {
-    type Output = Tensor<S, K, D>;
+impl<S: Shape, K: Kind, D: Device> Module<Tensor<S, K, D>> for Swiglu
+where
+    S: SwigluShape,
+{
+    type Output = Tensor<S::SwigluShape, K, D>;
     fn forward(&self, xs: &Tensor<S, K, D>) -> Self::Output {
         Tensor {
             repr: candle_nn::Activation::Swiglu.forward(&xs.repr).unwrap(),

@@ -1,9 +1,9 @@
 // #![allow(incomplete_features)]
 // #![feature(generic_const_exprs)]
-//
+
 use evol::prelude::*;
 
-type Custom = (Linear<784, 20>, Relu, Linear<20, 30>, Softmax);
+type Custom = (Linear<784, 20>, Relu, Linear<20, 2>, Swiglu);
 
 fn main() {
     let vm = VarMap::new();

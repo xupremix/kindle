@@ -122,3 +122,7 @@ pub trait Chunk<const DIM: usize, const NELEMS: usize>: Shape {
     const CHUNK_CHECK: ();
     type ChunkShape: Shape;
 }
+
+pub trait SwigluShape: Shape {
+    type SwigluShape: Shape;
+}

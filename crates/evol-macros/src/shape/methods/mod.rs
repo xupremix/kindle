@@ -18,6 +18,7 @@ mod matmul;
 mod narrow;
 mod squeeze_dim;
 mod stack;
+mod swiglu;
 mod t;
 mod transpose;
 mod unsqueeze;
@@ -47,6 +48,7 @@ pub(crate) fn methods(
     let cat = cat::cat(dims, name, idents, at_tk);
     let narrow = narrow::narrow(dims, name, idents, at_tk);
     let chunk = chunk::chunk(dims, name, idents, at_tk);
+    let swiglu = swiglu::swiglu(dims, name, idents, at_tk);
 
     quote! {
         #broadcast
@@ -68,5 +70,6 @@ pub(crate) fn methods(
         #cat
         #narrow
         #chunk
+        #swiglu
     }
 }

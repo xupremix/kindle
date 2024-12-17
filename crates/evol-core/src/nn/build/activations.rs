@@ -157,21 +157,29 @@ impl ModelBuilder for GeluPytorchTanh {
     }
 }
 
-// TODO: this requires changing the signature of the ModelBuilder trait
-// or just not allow it to be used as an operation since we don't have
-// access to the input shape
-//
-// impl<const DIM: usize> ModelBuilder for Softmax<DIM> {
-//     type Config = ();
-//
-//     fn step(
-//         vs: &crate::prelude::Vs,
-//         cfg: Self::Config,
-//         seq: candle_nn::Sequential,
-//     ) -> candle_nn::Sequential {
-//         todo!()
-//     }
-// }
+impl<const DIM: usize> ModelBuilder for Softmax<DIM> {
+    type Config = ();
+
+    fn step(
+        _vs: &crate::prelude::Vs,
+        _cfg: Self::Config,
+        seq: candle_nn::Sequential,
+    ) -> candle_nn::Sequential {
+        seq.add_fn(|xs| candle_nn::ops::softmax(xs, DIM))
+    }
+}
+
+impl<const DIM: usize> ModelBuilder for LogSoftmax<DIM> {
+    type Config = ();
+
+    fn step(
+        _vs: &crate::prelude::Vs,
+        _cfg: Self::Config,
+        seq: candle_nn::Sequential,
+    ) -> candle_nn::Sequential {
+        seq.add_fn(|xs| candle_nn::ops::log_softmax(xs, DIM))
+    }
+}
 
 impl ModelBuilder for SoftmaxLastDim {
     type Config = ();

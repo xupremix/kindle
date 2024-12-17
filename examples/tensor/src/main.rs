@@ -3,7 +3,7 @@
 
 use evol::prelude::*;
 
-type Custom = (Linear<784, 20>, Relu, Linear<20, 30>, Relu);
+type Custom = (Linear<784, 20>, Relu, Linear<20, 30>, Softmax);
 
 fn main() {
     let vm = VarMap::new();

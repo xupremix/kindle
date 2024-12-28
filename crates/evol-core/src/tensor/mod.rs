@@ -105,36 +105,28 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
     pub fn to_kind<K2: Kind>(&self) -> Tensor<S, K2, D> {
         Tensor {
             repr: self.repr.to_dtype(K2::DTYPE).unwrap(),
-            __shape: PhantomData,
-            __kind: PhantomData,
-            __device: PhantomData,
+            ..Default::default()
         }
     }
 
     pub fn to_kind_like<K2: Kind>(&self, _: &Tensor<S, K2, D>) -> Tensor<S, K2, D> {
         Tensor {
             repr: self.repr.to_dtype(K2::DTYPE).unwrap(),
-            __shape: PhantomData,
-            __kind: PhantomData,
-            __device: PhantomData,
+            ..Default::default()
         }
     }
 
     pub fn to_device<D2: Device>(&self) -> Tensor<S, K, D2> {
         Tensor {
             repr: self.repr.to_device(&D2::device()).unwrap(),
-            __shape: PhantomData,
-            __kind: PhantomData,
-            __device: PhantomData,
+            ..Default::default()
         }
     }
 
     pub fn to_device_like<D2: Device>(&self, _: &Tensor<S, K, D2>) -> Tensor<S, K, D2> {
         Tensor {
             repr: self.repr.to_device(&D2::device()).unwrap(),
-            __shape: PhantomData,
-            __kind: PhantomData,
-            __device: PhantomData,
+            ..Default::default()
         }
     }
 }

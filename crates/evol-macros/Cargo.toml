@@ -10,6 +10,7 @@ readme.workspace = true
 [features]
 nightly = []
 half = []
+onnx = ["dep:candle-onnx"]
 
 [lib]
 proc-macro = true
@@ -19,3 +20,6 @@ proc-macro2 = { workspace = true }
 quote = { workspace = true }
 syn = { workspace = true }
 itertools = { workspace = true }
+safetensors = { workspace = true }
+memmap2 = { workspace = true }
+candle-onnx = { version = "0.8.4", optional = true }

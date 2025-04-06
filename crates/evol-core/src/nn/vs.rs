@@ -29,7 +29,7 @@ pub struct Vs<
 impl<K: WithDType, D: Device> Vs<'_, K, D> {
     pub fn from_varmap(vm: &VarMap) -> Self {
         Self {
-            repr: candle_nn::VarBuilder::from_varmap(vm, K::DTYPE, &D::device()),
+            repr: VarBuilder::from_varmap(vm, K::DTYPE, &D::device()),
             __kind: std::marker::PhantomData,
             __device: std::marker::PhantomData,
         }

@@ -3,10 +3,16 @@
 
 use evol::prelude::*;
 
+model! {
+    Custom,
+    "/home/xupremix/Projects/evol/examples/tensor/src/model.safetensors"
+}
+
 // type MnistModel = (Linear<784, 20>, Relu, Linear<20, 2>, Swiglu);
-type CifarModel = (Linear<32, 20>, Relu, Linear<20, 2>, Swiglu);
+// type CifarModel = (Linear<32, 20>, Relu, Linear<20, 2>, Swiglu);
 
 fn main() {
+    /*
     let vm = VarMap::new();
     let vs: Vs = Vs::from_varmap(&vm);
     println!("Loading CIFAR dataset...");
@@ -17,4 +23,8 @@ fn main() {
     let xs = model.forward(&dt.train_images().to_kind::<f32>());
     println!("Model output:");
     println!("{:?}", xs);
+    */
+
+    let t: Tensor<Rank2<2, 2>> = Tensor::random();
+    println!("{}", t);
 }

@@ -6,5 +6,4 @@ readme.workspace = true
 license.workspace = true
 
 [dependencies]
-evol = { path = "../../", version = "*", features = ["nightly"] }
-# evol = { path = "../../", version = "*", features = ["all"] }
+evol = { path = "../../", version = "*", features = [] }

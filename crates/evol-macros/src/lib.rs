@@ -1,11 +1,18 @@
 use proc_macro::TokenStream;
 
 mod model;
+mod module;
 mod shape;
 
 #[proc_macro]
 pub fn shape(input: TokenStream) -> TokenStream {
     shape::shape(input)
+}
+
+// Module
+#[proc_macro_derive(Module)]
+pub fn module(input: TokenStream) -> TokenStream {
+    module::module(input)
 }
 
 // Model
@@ -15,4 +22,3 @@ pub fn model(input: TokenStream) -> TokenStream {
 }
 
 // Dataset
-// Module

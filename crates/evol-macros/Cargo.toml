@@ -21,5 +21,11 @@ quote = { workspace = true }
 syn = { workspace = true }
 itertools = { workspace = true }
 safetensors = { workspace = true }
-memmap2 = { workspace = true }
+candle-nn = { workspace = true }
+candle-core = { workspace = true }
+candle-transformers = { workspace = true }
 candle-onnx = { version = "0.8.4", optional = true }
+phf = { version = "0.11.3", features = ["macros"] }
+
+# [build-dependencies]
+# phf_codegen = "0.11.3"

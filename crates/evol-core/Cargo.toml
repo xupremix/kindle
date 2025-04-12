@@ -15,10 +15,10 @@ onnx = ["dep:candle-onnx", "evol-macros/onnx"]
 
 [dependencies]
 evol-macros = { path = "../evol-macros", version = "*" }
-candle-nn = "0.8.4"
-candle-core = "0.8.4"
-candle-transformers = "0.8.4"
 candle-onnx = { version = "0.8.4", optional = true }
 half = { version = "2.4.1", optional = true }
 safetensors = { workspace = true }
 candle-datasets = { workspace = true }
+candle-nn = { workspace = true }
+candle-core = { workspace = true }
+candle-transformers = { workspace = true }

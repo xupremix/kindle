@@ -41,4 +41,7 @@ serde = {version = "1.0.216", features = ["derive"]}
 safetensors = "0.4.5"
 itertools = "0.13.0"
 candle-datasets = "0.8.4"
-memmap2 = "0.9.5"
+candle-nn = "0.8.4"
+candle-core = "0.8.4"
+candle-transformers = "0.8.4"
+

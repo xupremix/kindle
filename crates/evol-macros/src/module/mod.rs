@@ -1,8 +1,9 @@
 use phf::{phf_map, phf_set};
 use proc_macro::TokenStream;
+use proc_macro2::Span;
 use quote::{quote, TokenStreamExt};
 use std::collections::VecDeque;
-use syn::{parse_macro_input, Data, Ident, Type};
+use syn::{parse_macro_input, Data, Ident, LitInt, Type};
 
 #[derive(Debug)]
 enum Layers {
@@ -56,6 +57,12 @@ static TYPES: phf::Set<&'static str> = phf_set! {
     "f64",
 };
 
+static DEVICES: phf::Set<&'static str> = phf_set! {
+    "Cpu",
+    "Cuda",
+    "Metal",
+};
+
 struct LayerType {
     ty: Layers,
     dims: Vec<syn::LitInt>,
@@ -106,17 +113,8 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
                     evol::prelude::Tensor<
                         EvolShape,
             };
-            if let Some(ref kind) = contains_kind {
-                out.append_all(quote! {
-                    #kind,
-                });
-            }
-            if let Some(ref dev) = contains_device {
-                out.append_all(quote! {
-                    #dev,
-                });
-            }
-            out.append_all(quote! {
+            let mut tmp = quote! {};
+            tmp.append_all(quote! {
                     >
                 > for #name <#(#params),*>
                 where
@@ -124,6 +122,7 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
             let mut layer_types = VecDeque::new();
             let mut field_names = vec![];
             let mut found_type = None;
+            let mut found_device = None;
             for field in data.fields.iter() {
                 if let Type::Path(ref path) = field.ty {
                     let layer = path.path.segments.iter().last().unwrap();
@@ -144,16 +143,29 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
                                             ref p,
                                         )) = arg
                                         {
-                                            let type_name = p
-                                                .path
-                                                .segments
-                                                .iter()
-                                                .last()
-                                                .unwrap()
-                                                .ident
-                                                .to_string();
+                                            let segment = p.path.segments.iter().last().unwrap();
+                                            let type_name = segment.ident.to_string();
                                             if TYPES.contains(&type_name) && found_type.is_none() {
                                                 found_type = Some(type_name);
+                                            } else if DEVICES.contains(&type_name)
+                                                && found_device.is_none()
+                                            {
+                                                let mut const_args = None;
+                                                if let syn::PathArguments::AngleBracketed(
+                                                    ref args,
+                                                ) = segment.arguments
+                                                {
+                                                    if let syn::GenericArgument::Const(
+                                                        syn::Expr::Lit(ref lit),
+                                                    ) = args.args.iter().next().unwrap()
+                                                    {
+                                                        if let syn::Lit::Int(ref lit_int) = lit.lit
+                                                        {
+                                                            const_args = Some(lit_int.clone());
+                                                        }
+                                                    }
+                                                }
+                                                found_device = Some((type_name, const_args));
                                             }
                                         }
                                     }
@@ -161,7 +173,7 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
                                         ty: Layers::Normal,
                                         dims: dims.clone(),
                                     });
-                                    out.append_all(gen_where_clause(0, &layer_types));
+                                    tmp.append_all(gen_where_clause(0, &layer_types));
                                     field_names.push(field.ident.clone().unwrap());
                                 }
                                 _ => panic!("Unsupported layer type: {:#?}", layer),
@@ -171,7 +183,7 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
                                     ty: Layers::Swiglu,
                                     dims: vec![],
                                 });
-                                out.append_all(gen_where_clause(0, &layer_types));
+                                tmp.append_all(gen_where_clause(0, &layer_types));
                                 field_names.push(field.ident.clone().unwrap());
                             }
                             Layers::Ignore => field_names.push(field.ident.clone().unwrap()),
@@ -179,13 +191,43 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
                     }
                 }
             }
-            println!("Found type: {:?}", found_type);
-            out.append_all(gen_body(
+            tmp.append_all(gen_body(
                 &layer_types,
                 &field_names,
-                contains_kind,
-                contains_device,
+                &contains_kind,
+                &contains_device,
+                &found_type,
+                &found_device,
             ));
+            if let Some(found) = found_type {
+                let i = Ident::new(&found, Span::call_site());
+                out.append_all(quote! {
+                    #i,
+                });
+            }
+            if let Some(kind) = contains_kind {
+                out.append_all(quote! {
+                    #kind,
+                });
+            }
+            if let Some((name, args)) = found_device {
+                let i = Ident::new(&name, Span::call_site());
+                out.append_all(quote! {
+                    #i
+                });
+                if let Some(arg) = args {
+                    out.append_all(quote! {
+                        < #arg >
+                    });
+                }
+                out.append_all(quote! { , });
+            }
+            if let Some(dev) = contains_device {
+                out.append_all(quote! {
+                    #dev,
+                });
+            }
+            out.append_all(tmp);
             out
         }
         _ => panic!("The module macro can only be used on structs"),
@@ -199,8 +241,10 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
 fn gen_body(
     layer_types: &VecDeque<LayerType>,
     field_names: &[Ident],
-    contains_kind: Option<Ident>,
-    contains_device: Option<Ident>,
+    contains_kind: &Option<Ident>,
+    contains_device: &Option<Ident>,
+    found_type: &Option<String>,
+    found_device: &Option<(String, Option<LitInt>)>,
 ) -> proc_macro2::TokenStream {
     let tensor_shape = gen_tensor_shape(0, layer_types);
     let first = &field_names[0];
@@ -219,19 +263,41 @@ fn gen_body(
             #kind,
         });
     }
+    let mut ty = None;
+    if let Some(found) = found_type {
+        let i = Ident::new(found, Span::call_site());
+        ty = Some(quote! {
+            #i,
+        });
+    }
     if let Some(device) = contains_device {
         d = Some(quote! {
             #device,
         });
     }
+    let mut device = None;
+    if let Some((name, args)) = found_device {
+        let i = Ident::new(name, Span::call_site());
+        device = if let Some(arg) = args {
+            Some(quote! {
+                #i < #arg >,
+            })
+        } else {
+            Some(quote! {
+                #i,
+            })
+        };
+    }
     quote! {{
         type Output = evol::prelude::Tensor<
             #tensor_shape,
+            #ty
             #k
             #d
+            #device
         >;
 
-        fn forward(&self, xs: &evol::prelude::Tensor<EvolShape, #k #d>) -> Self::Output {
+        fn forward(&self, xs: &evol::prelude::Tensor<EvolShape, #ty #k #d #device>) -> Self::Output {
             #first
             #(#forward)*
             xs

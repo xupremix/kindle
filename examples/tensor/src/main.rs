@@ -12,13 +12,13 @@ model! {
 // type CifarModel = (Linear<32, 20>, Relu, Linear<20, 2>, Swiglu);
 
 #[derive(Module)]
-struct CustomModel<D: Device> {
-    first: Linear<784, 20, true, f32, D>,
+struct CustomModel<K: Kind> {
+    first: Linear<784, 20, true, K, Cuda<0>>,
     second: Relu,
-    third: Linear<20, 2, true, f32, D>,
+    third: Linear<20, 2, true, K, Cuda<0>>,
     _another: String,
     fourth: Swiglu,
-    fifth: Linear<1, 2, true, f32, D>,
+    fifth: Linear<1, 2, true, K, Cuda<0>>,
 }
 
 /*
@@ -43,7 +43,7 @@ where
 
 fn main() {
     let vm = VarMap::new();
-    let vs = Vs::from_varmap(&vm);
+    let vs: Vs = Vs::from_varmap(&vm);
     let model = CustomModel {
         first: Linear::linear(&vs, "first"),
         second: Relu,
@@ -52,7 +52,7 @@ fn main() {
         fourth: Swiglu,
         fifth: Linear::linear(&vs, "fifth"),
     };
-    let t: Tensor<Rank3<2, 2, 784>> = Tensor::random();
-    let out: Tensor<Rank3<2, 2, 2>> = model.forward(&t);
+    let t: Tensor<Rank3<2, 2, 784>, _, _> = Tensor::random();
+    let out: Tensor<Rank3<2, 2, 2>, _, _> = model.forward(&t);
     println!("{}", out);
 }

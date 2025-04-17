@@ -44,4 +44,4 @@ candle-datasets = "0.8.4"
 candle-nn = "0.8.4"
 candle-core = "0.8.4"
 candle-transformers = "0.8.4"
-
+tch = { version = "0.19.0" }

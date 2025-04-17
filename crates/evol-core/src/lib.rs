@@ -4,8 +4,6 @@
 #![allow(incomplete_features)]
 #![cfg_attr(feature = "nightly", feature(generic_const_exprs))]
 
-// TODO: ADD DOCUMENTATION
-
 pub mod data;
 pub mod device;
 pub mod kind;
@@ -13,6 +11,7 @@ pub mod nn;
 pub mod shape;
 pub mod tensor;
 pub(crate) mod utils;
+pub use tch;
 
 pub mod prelude {
     use super::*;

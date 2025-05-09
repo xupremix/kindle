@@ -1,5 +1,6 @@
 use proc_macro::TokenStream;
 
+mod dataset;
 mod model;
 mod module;
 mod shape;
@@ -22,3 +23,7 @@ pub fn model(input: TokenStream) -> TokenStream {
 }
 
 // Dataset
+#[proc_macro]
+pub fn dataset(input: TokenStream) -> TokenStream {
+    dataset::dataset(input)
+}

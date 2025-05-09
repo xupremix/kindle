@@ -47,6 +47,7 @@ impl<
             stride: STRIDE,
             dilation: DILATION,
             groups: GROUPS,
+            cudnn_fwd_algo: None,
         };
         seq.add(if BIAS {
             candle_nn::conv2d(I, O, KERNEL, cfg2d, vs.pp(cfg.0)).unwrap()

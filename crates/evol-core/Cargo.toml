@@ -10,13 +10,14 @@ readme.workspace = true
 [features]
 nightly = ["evol-macros/nightly"]
 half = ["evol-macros/half", "dep:half"]
-cuda = ["candle-nn/cuda", "candle-core/cuda", "candle-transformers/cuda"]
+cuda = ["evol-macros/cuda", "candle-nn/cuda", "candle-core/cuda", "candle-transformers/cuda"]
 onnx = ["dep:candle-onnx", "evol-macros/onnx"]
+parquet = ["evol-macros/parquet"]
 
 [dependencies]
 evol-macros = { path = "../evol-macros", version = "*" }
-candle-onnx = { version = "0.8.4", optional = true }
-half = { version = "2.4.1", optional = true }
+candle-onnx = { version = "0.9.1", optional = true }
+half = { version = "2.6.0", optional = true }
 safetensors = { workspace = true }
 candle-datasets = { workspace = true }
 candle-nn = { workspace = true }

@@ -58,6 +58,7 @@ impl<
             stride: STRIDE,
             dilation: DILATION,
             groups: GROUPS,
+            cudnn_fwd_algo: None,
         };
         Self {
             repr: if BIAS {
@@ -103,6 +104,7 @@ impl<
             stride: STRIDE,
             dilation: DILATION,
             groups: GROUPS,
+            cudnn_fwd_algo: None,
         };
         Self {
             repr: candle_nn::Conv2d::new(weight.repr, Some(bias.repr), cfg),
@@ -137,6 +139,7 @@ impl<
             stride: STRIDE,
             dilation: DILATION,
             groups: GROUPS,
+            cudnn_fwd_algo: None,
         };
         Self {
             repr: candle_nn::Conv2d::new(weight.repr, None, cfg),

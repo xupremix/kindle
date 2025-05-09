@@ -44,8 +44,8 @@ fn parse_onnx(path: &Path) {
 }
 
 fn parse_pth(path: &Path) {}
-fn parse_tf(path: &Path) {}
-fn parse_keras(path: &Path) {}
-fn parse_hdf5(path: &Path) {}
-fn parse_pickle(path: &Path) {}
-fn parse_numpy(path: &Path) {}
+// fn parse_tf(path: &Path) {}
+// fn parse_keras(path: &Path) {}
+// fn parse_hdf5(path: &Path) {}
+// fn parse_pickle(path: &Path) {}
+// fn parse_numpy(path: &Path) {}

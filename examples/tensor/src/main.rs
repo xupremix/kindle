@@ -3,12 +3,15 @@
 
 use evol::prelude::*;
 
-/*
-model! {
-    Custom,
-    "/home/xupremix/Projects/evol/examples/tensor/src/model.onnx"
+// model! {
+//     Custom,
+//     "/home/xupremix/Projects/evol/examples/tensor/src/model.onnx"
+// }
+
+dataset! {
+    MnistTest,
+    "/home/xupremix/Desktop/test.parquet"
 }
-*/
 
 #[derive(Module)]
 struct CustomModel<K: Kind, D: Device> {
@@ -21,6 +24,8 @@ struct CustomModel<K: Kind, D: Device> {
 }
 
 fn main() {
+    let dataset: MnistTest = MnistTest::load();
+
     let vm = VarMap::new();
     let vs: Vs = Vs::from_varmap(&vm);
     let model = CustomModel {

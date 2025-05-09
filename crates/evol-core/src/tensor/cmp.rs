@@ -1,5 +1,5 @@
 use candle_core::op::CmpOp;
-use safetensors::View;
+use safetensors::tensor::View;
 
 use crate::tensor::{Device, Kind, Shape, Tensor};
 

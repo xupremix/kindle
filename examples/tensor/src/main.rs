@@ -3,32 +3,15 @@
 
 use evol::prelude::*;
 
-// model! {
-//     Custom,
-//     "/home/xupremix/Projects/evol/examples/tensor/src/model.onnx"
-// }
-
 dataset! {
-    MnistTest,
+    MnistDataset,
     "/home/xupremix/Desktop/test.parquet"
 }
 
-#[derive(Module)]
-struct CustomModel<K: Kind, D: Device> {
-    first: Linear<784, 20, true, K, D>,
-    second: Relu,
-    third: Linear<20, 2, true, K, D>,
-    _ignore_field: String,
-    fourth: Swiglu,
-    fifth: Linear<1, 2, true, K, D>,
-}
-
 fn main() {
-    // testing byte conversion between candle and tch tensors for future model loading and tensor
-    // switching
-    // evol::testing();
-
-    let dataset: MnistTest = MnistTest::load().unwrap();
+    let dataset: MnistDataset = MnistDataset::load().unwrap();
+    println!("{:?}", dataset.images);
+    println!("{:?}", dataset.labels);
 
     let vm = VarMap::new();
     let vs: Vs = Vs::from_varmap(&vm);
@@ -41,6 +24,21 @@ fn main() {
         fifth: Linear::linear(&vs, "fifth"),
     };
     let t: Tensor<Rank3<2, 2, 784>> = Tensor::random();
-    let out = model.forward(&t);
+    let _out = model.forward(&t);
     // println!("{}", out);
+}
+
+// model! {
+//     Custom,
+//     "/home/xupremix/Projects/evol/examples/tensor/src/model.onnx"
+// }
+
+#[derive(Module)]
+struct CustomModel<K: Kind, D: Device> {
+    first: Linear<784, 20, true, K, D>,
+    second: Relu,
+    third: Linear<20, 2, true, K, D>,
+    _ignore_field: String,
+    fourth: Swiglu,
+    fifth: Linear<1, 2, true, K, D>,
 }

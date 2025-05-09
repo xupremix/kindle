@@ -12,7 +12,7 @@ nightly = ["evol-macros/nightly"]
 half = ["evol-macros/half", "dep:half"]
 cuda = ["evol-macros/cuda", "candle-nn/cuda", "candle-core/cuda", "candle-transformers/cuda"]
 onnx = ["dep:candle-onnx", "evol-macros/onnx"]
-parquet = ["evol-macros/parquet"]
+parquet = ["evol-macros/parquet", "dep:parquet", "dep:image"]
 
 [dependencies]
 evol-macros = { path = "../evol-macros", version = "*" }
@@ -24,3 +24,5 @@ candle-nn = { workspace = true }
 candle-core = { workspace = true }
 candle-transformers = { workspace = true }
 tch = { workspace = true }
+parquet = { version = "55.0.0", optional = true }
+image = { version = "0.25.6", optional = true }

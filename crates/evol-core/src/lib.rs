@@ -11,22 +11,32 @@ pub mod nn;
 pub mod shape;
 pub mod tensor;
 pub(crate) mod utils;
-use device::Device;
+
+// re-exports for macro use
+
+#[cfg(feature = "parquet")]
+pub use image;
+#[cfg(feature = "parquet")]
+pub use parquet;
 pub use tch;
 
-pub fn testing() {
-    let t = tch::Tensor::rand([2, 2], tch::kind::FLOAT_CPU);
-    let bytes = t.contiguous().data_ptr() as *const f32;
-    let slice =
-        unsafe { std::slice::from_raw_parts(bytes, t.numel() * std::mem::size_of::<f32>()) };
-    let ct = candle_core::Tensor::from_slice(slice, (2, 2), &device::Cuda::<0>::device()).unwrap();
-    println!("{}", ct);
-    t.print();
-
-    // there is an alternative maybe using bytemuch and doing t.copy_data instead of from raw
-    // parts, however that also requires an unsafe operation since we need to set manually the size
-    // of a vector since we're copying data directly into it
-}
+// pub fn testing() {
+//     use device::Device;
+//     let t = tch::Tensor::rand([2, 2], tch::kind::FLOAT_CPU);
+//     let bytes = t.contiguous().data_ptr() as *const f32;
+//     let slice =
+//         unsafe { std::slice::from_raw_parts(bytes, t.numel() * std::mem::size_of::<f32>()) };
+//     let ct = candle_core::Tensor::from_slice(slice, (2, 2), &device::Cuda::<0>::device()).unwrap();
+//     println!("{}", ct);
+//     t.print();
+//
+//     // there is an alternative maybe using bytemuch and doing t.copy_data instead of from raw
+//     // parts, however that also requires an unsafe operation since we need to set manually the size
+//     // of a vector since we're copying data directly into it
+//     //
+//     // this now also means that we can use the tch loading from their formats and then convert them
+//     // to our tensor types which are more convenient
+// }
 
 pub mod prelude {
     use super::*;

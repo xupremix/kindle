@@ -12,7 +12,7 @@ nightly = []
 half = []
 cuda = []
 onnx = ["dep:candle-onnx"]
-parquet = ["dep:parquet"]
+parquet = ["dep:parquet", "dep:image"]
 
 [lib]
 proc-macro = true
@@ -29,7 +29,7 @@ candle-transformers = { workspace = true }
 phf = { version = "0.11.3", features = ["macros"] }
 candle-onnx = { version = "0.9.1", optional = true }
 parquet = { version = "55.0.0", optional = true }
-image = { workspace = true }
+image = { version = "0.25.6", optional = true }
 
 # [build-dependencies]
 # phf_codegen = "0.11.3"

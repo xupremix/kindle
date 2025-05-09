@@ -1,8 +1,10 @@
 use proc_macro::TokenStream;
 use quote::quote;
+use std::path::Path;
 
 mod arg;
-mod parser;
+mod onnx_parser;
+
 use arg::Args;
 
 pub(crate) fn model(input: TokenStream) -> TokenStream {
@@ -10,7 +12,7 @@ pub(crate) fn model(input: TokenStream) -> TokenStream {
     let name = args.name;
     let path = args.path;
 
-    parser::parse_file(path);
+    parse(path);
 
     quote! {
         #[derive(Debug, Clone)]
@@ -25,4 +27,23 @@ pub(crate) fn model(input: TokenStream) -> TokenStream {
         }
     }
     .into()
+}
+
+fn parse(path: String) {
+    let path = Path::new(&path);
+    match path
+        .extension()
+        .expect("File extension not found")
+        .to_str()
+        .expect("Ivalid string")
+    {
+        "onnx" => onnx_parser::parse(path),
+        "pth" | "pt" => todo!(),
+        "pb" => todo!(),
+        "keras" => todo!(),
+        "h5" | "hdf5" => todo!(),
+        "pkl" | "pickle" => todo!(),
+        "npy" | "npz" => todo!(),
+        _ => panic!("Unsupported file format"),
+    }
 }

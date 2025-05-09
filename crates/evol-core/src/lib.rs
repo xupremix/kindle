@@ -11,6 +11,7 @@ pub mod nn;
 pub mod shape;
 pub mod tensor;
 pub(crate) mod utils;
+use device::Device;
 pub use tch;
 
 pub fn testing() {
@@ -18,7 +19,7 @@ pub fn testing() {
     let bytes = t.contiguous().data_ptr() as *const f32;
     let slice =
         unsafe { std::slice::from_raw_parts(bytes, t.numel() * std::mem::size_of::<f32>()) };
-    let ct = candle_core::Tensor::from_slice(slice, (2, 2), &candle_core::Device::Cpu).unwrap();
+    let ct = candle_core::Tensor::from_slice(slice, (2, 2), &device::Cuda::<0>::device()).unwrap();
     println!("{}", ct);
     t.print();
 

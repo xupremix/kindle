@@ -14,16 +14,16 @@ pub(crate) fn dataset(input: TokenStream) -> TokenStream {
     let dims = parse(path);
 
     #[cfg(feature = "cuda")]
-    let device = quote! { D: evol::device::Device = evol::device::Cuda };
+    let device = quote! { Cuda };
 
     #[cfg(not(feature = "cuda"))]
-    let device = quote! { D: evol::device::Device = evol::device::Cpu };
+    let device = quote! { Cpu };
 
     quote! {
         #[derive(Debug, Clone)]
         struct #name <
             K: evol::kind::Kind = f32,
-            #device,
+            D: evol::device::Device = evol::device:: #device ,
         > {
             data: evol::tensor::Tensor<
                 evol::shape::Rank3<#(#dims),*> ,

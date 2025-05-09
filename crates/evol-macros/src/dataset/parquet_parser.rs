@@ -30,6 +30,18 @@ pub(crate) fn parse_parquet(path: &Path) -> [usize; 3] {
                             let (xs, ys) =
                                 image::load_from_memory(bytes.data()).unwrap().dimensions();
                             (x, y) = (xs as usize, ys as usize);
+
+                            // example of how to create a tensor from raw data, this could also be
+                            // an option when switching from tch tensors to candle tensors
+                            //
+                            // let image = image::load_from_memory(bytes.data()).unwrap();
+                            // let tensor = candle_core::Tensor::from_vec(
+                            //     image.as_bytes().into(),
+                            //     (x, y),
+                            //     &candle_core::Device::Cpu,
+                            // )
+                            // .unwrap();
+                            // println!("{:?}", tensor);
                         }
                     }
                 }

@@ -13,6 +13,20 @@ pub mod tensor;
 pub(crate) mod utils;
 pub use tch;
 
+pub fn testing() {
+    let t = tch::Tensor::rand([2, 2], tch::kind::FLOAT_CPU);
+    let bytes = t.contiguous().data_ptr() as *const f32;
+    let slice =
+        unsafe { std::slice::from_raw_parts(bytes, t.numel() * std::mem::size_of::<f32>()) };
+    let ct = candle_core::Tensor::from_slice(slice, (2, 2), &candle_core::Device::Cpu).unwrap();
+    println!("{}", ct);
+    t.print();
+
+    // there is an alternative maybe using bytemuch and doing t.copy_data instead of from raw
+    // parts, however that also requires an unsafe operation since we need to set manually the size
+    // of a vector since we're copying data directly into it
+}
+
 pub mod prelude {
     use super::*;
 

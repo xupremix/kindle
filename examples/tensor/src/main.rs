@@ -24,6 +24,10 @@ struct CustomModel<K: Kind, D: Device> {
 }
 
 fn main() {
+    // testing byte conversion between candle and tch tensors for future model loading and tensor
+    // switching
+    evol::testing();
+
     let dataset: MnistTest = MnistTest::load();
 
     let vm = VarMap::new();

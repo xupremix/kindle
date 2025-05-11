@@ -5,7 +5,7 @@ use evol::prelude::*;
 
 dataset! {
     MnistDataset,
-    "/home/xupremix/Desktop/test.parquet"
+    "/home/xupremix/Desktop/train.parquet"
 }
 
 fn main() {

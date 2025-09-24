@@ -11,6 +11,7 @@ mod activations;
 #[cfg(feature = "nightly")]
 mod conv2d;
 mod linear;
+mod pool;
 mod tuple;
 
 pub struct Model<M> {

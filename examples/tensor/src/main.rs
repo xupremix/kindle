@@ -8,10 +8,18 @@ dataset! {
     "/home/xupremix/Desktop/train.parquet"
 }
 
+#[derive(Module)]
+struct CustomModel<K: Kind, D: Device> {
+    first: Linear<784, 20, true, K, D>,
+    second: Relu,
+    third: Linear<20, 2, true, K, D>,
+    _ignore_field: String,
+    fourth: Swiglu,
+    fifth: Linear<1, 2, true, K, D>,
+}
+
 fn main() {
     let dataset: MnistDataset = MnistDataset::load().unwrap();
-    println!("{:?}", dataset.images);
-    println!("{:?}", dataset.labels);
 
     let vm = VarMap::new();
     let vs: Vs = Vs::from_varmap(&vm);
@@ -32,13 +40,3 @@ fn main() {
 //     Custom,
 //     "/home/xupremix/Projects/evol/examples/tensor/src/model.onnx"
 // }
-
-#[derive(Module)]
-struct CustomModel<K: Kind, D: Device> {
-    first: Linear<784, 20, true, K, D>,
-    second: Relu,
-    third: Linear<20, 2, true, K, D>,
-    _ignore_field: String,
-    fourth: Swiglu,
-    fifth: Linear<1, 2, true, K, D>,
-}

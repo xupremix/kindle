@@ -6,6 +6,7 @@ use candle_nn::Conv2dConfig as Cfg;
 use crate::{
     device::Device,
     prelude::{Conv2d, PREFIX},
+    utils::ToUsize2,
 };
 
 use super::ModelBuilder;
@@ -25,15 +26,15 @@ impl Default for Conv2dConfig {
 impl<
         const I: usize,
         const O: usize,
-        const KERNEL: usize,
+        Kernel: ToUsize2,
         const PADDING: usize,
-        const STRIDE: usize,
+        Stride: ToUsize2,
         const DILATION: usize,
         const GROUPS: usize,
         const BIAS: bool,
         K: WithDType,
         D: Device,
-    > ModelBuilder for Conv2d<I, O, KERNEL, PADDING, STRIDE, DILATION, GROUPS, BIAS, K, D>
+    > ModelBuilder for Conv2d<I, O, Kernel, PADDING, Stride, DILATION, GROUPS, BIAS, K, D>
 {
     type Config = Conv2dConfig;
 
@@ -44,15 +45,15 @@ impl<
     ) -> candle_nn::Sequential {
         let cfg2d = Cfg {
             padding: PADDING,
-            stride: STRIDE,
+            stride: Stride::FIRST,
             dilation: DILATION,
             groups: GROUPS,
             cudnn_fwd_algo: None,
         };
         seq.add(if BIAS {
-            candle_nn::conv2d(I, O, KERNEL, cfg2d, vs.pp(cfg.0)).unwrap()
+            candle_nn::conv2d(I, O, Kernel::FIRST, cfg2d, vs.pp(cfg.0)).unwrap()
         } else {
-            candle_nn::conv2d_no_bias(I, O, KERNEL, cfg2d, vs.pp(cfg.0)).unwrap()
+            candle_nn::conv2d_no_bias(I, O, Kernel::FIRST, cfg2d, vs.pp(cfg.0)).unwrap()
         })
     }
 }

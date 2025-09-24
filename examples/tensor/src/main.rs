@@ -1,7 +1,7 @@
 #![allow(incomplete_features)]
 #![feature(generic_const_exprs)]
 
-use evol::prelude::*;
+use kindle::prelude::*;
 
 dataset! {
     MnistDataset,

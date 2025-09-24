@@ -12,7 +12,7 @@ readme = "README.md"
 license = "MIT or Apache-2.0"
 
 [package]
-name = "evol"
+name = "kindle"
 version = "0.1.0"
 edition = "2021"
 readme = "README.md"
@@ -24,14 +24,14 @@ default = []
 non-nightly = ["cuda", "half", "onnx"]
 all = ["nightly", "cuda", "half", "onnx", "parquet"]
 
-nightly = ["evol-core/nightly"]
-half = ["evol-core/half"]
-cuda = ["evol-core/cuda"]
-onnx = ["evol-core/onnx"]
-parquet = ["evol-core/parquet"]
+nightly = ["kindle-core/nightly"]
+half = ["kindle-core/half"]
+cuda = ["kindle-core/cuda"]
+onnx = ["kindle-core/onnx"]
+parquet = ["kindle-core/parquet"]
 
-[dependencies.evol-core]
-path = "crates/evol-core"
+[dependencies.kindle-core]
+path = "crates/kindle-core"
 version = "0.1.0"
 
 [workspace.dependencies]

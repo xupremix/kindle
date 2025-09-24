@@ -1,1 +1,1 @@
-pub use evol_core::*;
+pub use kindle_core::*;

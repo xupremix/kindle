@@ -1,8 +1,5 @@
-use candle_nn::Module as _;
-
-use crate::{nn::layers::pool::MaxPool2D, utils::ToUsize2};
-
 use super::ModelBuilder;
+use crate::{nn::layers::pool::MaxPool2D, utils::ToUsize2};
 
 impl<Pool: ToUsize2, Stride: ToUsize2> ModelBuilder for MaxPool2D<Pool, Stride> {
     type Config = ();

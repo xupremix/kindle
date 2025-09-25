@@ -11,6 +11,7 @@ mod activations;
 #[cfg(feature = "nightly")]
 mod conv2d;
 mod linear;
+#[cfg(feature = "nightly")]
 mod pool;
 mod tuple;
 

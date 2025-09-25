@@ -12,6 +12,8 @@ pub mod prelude {
     #[cfg(feature = "nightly")]
     pub use super::layers::conv2d::*;
     pub use super::layers::linear::*;
+    #[cfg(feature = "nightly")]
+    pub use super::layers::pool::*;
     pub use super::optim::adam::*;
     pub use super::optim::sgd::*;
     pub use super::vs::*;

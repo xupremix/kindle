@@ -19,7 +19,17 @@ struct CustomModel<K: Kind, D: Device> {
 }
 
 fn main() {
+    let t: Tensor<Rank4<2, 3, 4, 5>> = Tensor::random();
+    let maxpool = t
+        .to_candle_tensor()
+        .max_pool2d_with_stride((3, 3), (1, 1))
+        .unwrap();
+    let out: Tensor<Rank4<2, 3, 2, 3>> = MaxPool2D::default().forward(&t);
+    println!("{}", out);
+    println!("{}", maxpool);
+
     let dataset: MnistDataset = MnistDataset::load().unwrap();
+    println!("{:?}", dataset.images);
 
     let vm = VarMap::new();
     let vs: Vs = Vs::from_varmap(&vm);

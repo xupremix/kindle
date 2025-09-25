@@ -7,12 +7,12 @@ pub trait ToUsize2 {
     const TUPLE: (usize, usize) = (Self::FIRST, Self::SECOND);
 }
 
-pub struct Window<const FIRST: usize, const SECOND: usize = FIRST>;
-impl<const FIRST: usize, const SECOND: usize> ToUsize2 for Window<FIRST, SECOND> {
-    const FIRST: usize = FIRST;
-    const SECOND: usize = SECOND;
+#[derive(Default, Debug, Clone, Copy, PartialEq)]
+pub struct Window<const H: usize, const W: usize = H>;
+impl<const H: usize, const W: usize> ToUsize2 for Window<H, W> {
+    const FIRST: usize = H;
+    const SECOND: usize = W;
 }
 
-pub type Kernel<const FIRST: usize, const SECOND: usize = FIRST> = Window<FIRST, SECOND>;
-pub type Pool<const FIRST: usize, const SECOND: usize = FIRST> = Window<FIRST, SECOND>;
-pub type Stride<const FIRST: usize, const SECOND: usize = FIRST> = Window<FIRST, SECOND>;
+pub type Kernel<const H: usize, const W: usize = H> = Window<H, W>;
+pub type Stride<const H: usize, const W: usize = H> = Window<H, W>;

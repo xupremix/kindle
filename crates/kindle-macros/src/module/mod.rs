@@ -10,6 +10,7 @@ enum Layers {
     Normal,
     Ignore,
     Swiglu,
+    MaxPool2D,
 }
 
 static LAYERS: phf::Map<&'static str, Layers> = phf_map! {
@@ -17,6 +18,7 @@ static LAYERS: phf::Map<&'static str, Layers> = phf_map! {
     "Conv2d" => Layers::Normal,
     "Relu" => Layers::Ignore,
     "Swiglu" => Layers::Swiglu,
+    "MaxPool2D" => Layers::MaxPool2D,
 };
 
 #[cfg(feature = "half")]
@@ -186,6 +188,15 @@ pub(crate) fn module(input: TokenStream) -> TokenStream {
                                 tmp.append_all(gen_where_clause(0, &layer_types));
                                 field_names.push(field.ident.clone().unwrap());
                             }
+                            Layers::MaxPool2D => {
+                                layer_types.push_front(LayerType {
+                                    ty: Layers::MaxPool2D,
+                                    dims: vec![],
+                                });
+                                tmp.append_all(gen_where_clause(0, &layer_types));
+                                field_names.push(field.ident.clone().unwrap());
+                                println!("First");
+                            }
                             Layers::Ignore => field_names.push(field.ident.clone().unwrap()),
                         }
                     }
@@ -318,6 +329,10 @@ fn gen_tensor_shape(start: usize, layer_types: &VecDeque<LayerType>) -> proc_mac
             Layers::Swiglu => quote! {
                 <#middle as kindle::prelude::SwigluShape>::SwigluShape
             },
+            Layers::MaxPool2D => {
+                println!("second");
+                todo!()
+            }
             Layers::Ignore => unreachable!("An `Ignore` layer should never be added"),
         }
     }
@@ -336,6 +351,10 @@ fn gen_where_clause(start: usize, layer_types: &VecDeque<LayerType>) -> proc_mac
             Layers::Swiglu => quote! {
                 #middle: kindle::prelude::SwigluShape,
             },
+            Layers::MaxPool2D => {
+                println!("third");
+                todo!()
+            }
             Layers::Ignore => unreachable!("An `Ignore` layer should never be added"),
         }
     } else {
@@ -348,6 +367,10 @@ fn gen_where_clause(start: usize, layer_types: &VecDeque<LayerType>) -> proc_mac
             Layers::Swiglu => quote! {
                 <#middle as kindle::prelude::SwigluShape>::SwigluShape
             },
+            Layers::MaxPool2D => {
+                println!("fourth");
+                todo!()
+            }
             Layers::Ignore => unreachable!("An `Ignore` layer should never be added"),
         }
     }

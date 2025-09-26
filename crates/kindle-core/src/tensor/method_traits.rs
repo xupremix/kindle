@@ -133,3 +133,8 @@ pub trait Chunk<const DIM: usize, const NELEMS: usize>: Shape {
 pub trait SwigluShape: Shape {
     type SwigluShape: Shape;
 }
+
+#[cfg(feature = "nightly")]
+pub trait MaxPool2dShape: Shape {
+    type MaxPool2dShape: Shape;
+}

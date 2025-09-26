@@ -5,7 +5,7 @@ use std::{
     marker::PhantomData,
 };
 
-use crate::{device::Device, kind::Kind, shape::Shape};
+use crate::{device::Device, kind::Kind, shape::Scalar, shape::Shape};
 
 #[cfg(feature = "cuda")]
 use crate::device::Cuda;
@@ -126,6 +126,15 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
     pub fn to_device_like<D2: Device>(&self, _: &Tensor<S, K, D2>) -> Tensor<S, K, D2> {
         Tensor {
             repr: self.repr.to_device(&D2::device()).unwrap(),
+            ..Default::default()
+        }
+    }
+}
+
+impl<K: Kind, D: Device> From<K> for Tensor<Scalar, K, D> {
+    fn from(value: K) -> Self {
+        Self {
+            repr: candle_core::Tensor::new(value, &D::device()).unwrap(),
             ..Default::default()
         }
     }

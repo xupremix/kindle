@@ -2,4 +2,4 @@ target/
 Cargo.lock
 *.safetensors
 *.onnx
-.cargo
+.idea

@@ -1,6 +1,7 @@
 use candle_core::op::CmpOp;
 use safetensors::tensor::View;
 
+use crate::prelude::{TensorScalar, ToTensorScalar};
 use crate::tensor::{Device, Kind, Shape, Tensor};
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
@@ -43,9 +44,12 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
         }
     }
 
-    pub fn cmp(&self, other: &Self, ord: CmpOp) -> Tensor<S, u8, D> {
+    pub fn cmp<O: ToTensorScalar<S, K, D>>(&self, other: O, ord: CmpOp) -> Tensor<S, u8, D> {
         Tensor {
-            repr: self.repr.cmp(&other.repr, ord).unwrap(),
+            repr: match other.to_tensorscalar() {
+                TensorScalar::Tensor(t) => self.repr.cmp(&t.repr, ord).unwrap(),
+                TensorScalar::Scalar(s) => self.repr.cmp(s.to_scalar(), ord).unwrap(),
+            },
             ..Default::default()
         }
     }

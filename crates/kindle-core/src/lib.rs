@@ -6,11 +6,12 @@
 
 pub mod data;
 pub mod device;
+pub mod err;
 pub mod kind;
 pub mod nn;
 pub mod shape;
 pub mod tensor;
-pub(crate) mod utils;
+pub mod utils;
 
 // re-exports for macro use
 
@@ -46,6 +47,7 @@ pub mod prelude {
     pub use data::loader::*;
     pub use data::*;
     pub use device::*;
+    pub use err::*;
     pub use kind::*;
     pub use nn::prelude::*;
     pub use nn::*;
@@ -53,6 +55,7 @@ pub mod prelude {
     pub use tensor::prelude::*;
     pub use tensor::*;
     pub use utils::CmpOp;
+    pub use utils::*;
 }
 
 pub use kindle_macros as macros;

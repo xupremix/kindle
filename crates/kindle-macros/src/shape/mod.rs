@@ -59,7 +59,7 @@ pub(crate) fn shape(input: TokenStream) -> TokenStream {
     };
 
     let shape = if dims == 0 {
-        quote! { [K; 0] }
+        quote! { K }
     } else {
         gen_shape(dims - 1, 0)
     };
@@ -72,7 +72,9 @@ pub(crate) fn shape(input: TokenStream) -> TokenStream {
         }
     };
 
-    let as_slice = if dims <= 1 {
+    let as_slice = if dims == 0 {
+        quote! { std::slice::from_ref(shape) }
+    } else if dims == 1 {
         quote! { shape.as_slice() }
     } else {
         let mut out = vec![];

@@ -2,6 +2,7 @@ use crate::prelude::FromSlice;
 use crate::tensor::{Device, Kind, Shape, Tensor};
 
 mod arange;
+mod one_hot;
 mod rand;
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {

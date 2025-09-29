@@ -1,7 +1,7 @@
 use super::ModelBuilder;
-use crate::{nn::layers::pool::MaxPool2D, utils::ToUsize2};
+use crate::{nn::layers::pool::MaxPool2d, utils::ToUsize2};
 
-impl<Pool: ToUsize2, Stride: ToUsize2> ModelBuilder for MaxPool2D<Pool, Stride> {
+impl<Pool: ToUsize2, Stride: ToUsize2> ModelBuilder for MaxPool2d<Pool, Stride> {
     type Config = ();
 
     fn step(

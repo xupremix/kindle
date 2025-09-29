@@ -2,7 +2,7 @@ use candle_core::op::CmpOp;
 
 use crate::err::{KindleError, KindleResult};
 use crate::shape::Rank1;
-use crate::tensor::{Device, Kind, Shape, Tensor};
+use crate::tensor::{Device, Kind, Tensor};
 
 struct Tmp;
 

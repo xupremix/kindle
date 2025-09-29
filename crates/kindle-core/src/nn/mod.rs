@@ -2,6 +2,7 @@ use crate::{shape::Shape, tensor::FromCandleTensor};
 
 pub mod build;
 pub mod layers;
+pub mod loss;
 pub mod optim;
 mod tuple;
 pub mod vs;
@@ -14,6 +15,7 @@ pub mod prelude {
     pub use super::layers::linear::*;
     #[cfg(feature = "nightly")]
     pub use super::layers::pool::*;
+    pub use super::loss::*;
     pub use super::optim::adam::*;
     pub use super::optim::sgd::*;
     pub use super::vs::*;

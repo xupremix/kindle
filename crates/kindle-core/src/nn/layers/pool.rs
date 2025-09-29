@@ -8,13 +8,13 @@ use crate::utils::{ToUsize2, Window};
 use std::marker::PhantomData;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct MaxPool2D<Kernel: ToUsize2 + 'static = Window<3>, Stride: ToUsize2 + 'static = Window<1>>
+pub struct MaxPool2d<Kernel: ToUsize2 + 'static = Window<3>, Stride: ToUsize2 + 'static = Window<1>>
 {
     __pool: PhantomData<Kernel>,
     __stride: PhantomData<Stride>,
 }
 
-impl Default for MaxPool2D<Window<3>, Window<1>> {
+impl Default for MaxPool2d<Window<3>, Window<1>> {
     fn default() -> Self {
         Self {
             __pool: PhantomData,
@@ -23,7 +23,7 @@ impl Default for MaxPool2D<Window<3>, Window<1>> {
     }
 }
 
-impl<Kernel: ToUsize2 + 'static, Stride: ToUsize2 + 'static> MaxPool2D<Kernel, Stride> {
+impl<Kernel: ToUsize2 + 'static, Stride: ToUsize2 + 'static> MaxPool2d<Kernel, Stride> {
     pub fn new() -> Self {
         Self {
             __pool: PhantomData,
@@ -41,7 +41,7 @@ impl<
         D: Device,
         Kernel: ToUsize2,
         Stride: ToUsize2,
-    > Module<Tensor<Rank4<N, CIN, HIN, WIN>, K, D>> for MaxPool2D<Kernel, Stride>
+    > Module<Tensor<Rank4<N, CIN, HIN, WIN>, K, D>> for MaxPool2d<Kernel, Stride>
 where
     [(); f32::floor((HIN - Kernel::FIRST) as f32 / Stride::FIRST as f32) as usize + 1]:,
     [(); f32::floor((WIN - Kernel::SECOND) as f32 / Stride::SECOND as f32) as usize + 1]:,
@@ -64,7 +64,7 @@ where
     }
 }
 
-impl<Kernel: ToUsize2 + Default, Stride: ToUsize2 + Default> MaxPool2D<Kernel, Stride> {
+impl<Kernel: ToUsize2 + Default, Stride: ToUsize2 + Default> MaxPool2d<Kernel, Stride> {
     pub fn forward<
         const N: usize,
         const CIN: usize,

@@ -1,7 +1,16 @@
 #![allow(incomplete_features)]
 #![feature(generic_const_exprs)]
 
-use kindle::{nn::optim::Backward, prelude::*};
+use clap::Parser;
+use kindle::prelude::*;
+
+#[derive(Parser, Debug)]
+struct Args {
+    #[arg(short, long, default_value_t = false)]
+    train: bool,
+    #[arg(short, long, default_value = "mnist.safetensors")]
+    path: String,
+}
 
 dataset! {
     MnistTrainDataset,
@@ -54,52 +63,61 @@ impl MnistModel {
 }
 
 fn main() {
-    let train_dataset: MnistTrainDataset = MnistTrainDataset::load().unwrap();
-    let tensors = train_dataset.images.unsqueeze::<1>().to_kind::<f32>();
+    let Args { train, path } = Args::parse();
 
-    let x_train = &tensors.chunk::<0, BATCH_SIZE>();
-    let y_train = &train_dataset
-        .labels
-        .to_kind::<u32>()
-        .chunk::<0, BATCH_SIZE>();
+    if train {
+        let vm = VarMap::new();
+        let vs: Vs = Vs::from_varmap(&vm);
+        let train_dataset: MnistTrainDataset = MnistTrainDataset::load().unwrap();
+        let tensors = train_dataset.images.unsqueeze::<1>().to_kind::<f32>();
 
-    let vm = VarMap::new();
-    let vs: Vs = Vs::from_varmap(&vm);
-    let model = MnistModel::new(&vs);
-    let mut optim = AdamW::new(vm.all_vars(), LR);
+        let x_train = &tensors.chunk::<0, BATCH_SIZE>();
+        let y_train = &train_dataset
+            .labels
+            .to_kind::<u32>()
+            .chunk::<0, BATCH_SIZE>();
 
-    for epoch in 1..=EPOCHS {
-        let mut total_loss = 0.;
-        let mut n_correct = 0;
+        let model = MnistModel::new(&vs);
+        let mut optim = AdamW::new(vm.all_vars(), LR);
+        let mut acc = 0.;
 
-        for (x, y) in x_train.iter().zip(y_train) {
-            let logits = model.forward(x);
+        for epoch in 1..=EPOCHS {
+            let mut total_loss = 0.;
+            let mut n_correct = 0;
 
-            // Loss calculation
-            let loss = Loss::cross_entropy(&logits, y);
-            total_loss += loss.to_scalar();
-            optim.backward_step(&loss);
+            for (x, y) in x_train.iter().zip(y_train) {
+                let logits = model.forward(x);
 
-            // Accuracy calculation
-            let preds = logits.argmax::<1>();
-            let correct = preds.eq(y).to_kind::<u32>().sum_all().to_scalar();
-            n_correct += correct;
+                // Loss calculation
+                let loss = Loss::cross_entropy(&logits, y);
+                total_loss += loss.to_scalar();
+                optim.backward_step(&loss);
+
+                // Accuracy calculation
+                let preds = logits.argmax::<1>();
+                let correct = preds.eq(y).to_kind::<u32>().sum_all().to_scalar();
+                n_correct += correct;
+            }
+
+            acc = n_correct as f32 / N_SAMPLES as f32;
+            println!("epoch {epoch}: loss: {total_loss:.4}, accuracy: {acc:.4}");
         }
+        vm.save(format!("mnist{acc:.0}.safetensors")).unwrap();
+    } else {
+        // Testing with the trained model
+        let mut vm = VarMap::new();
+        vm.load(path).unwrap();
+        let vs: Vs = Vs::from_varmap(&vm);
+        let model = MnistModel::new(&vs);
 
-        let acc = n_correct as f32 / N_SAMPLES as f32;
-        println!("epoch {epoch}: loss: {total_loss:.4}, accuracy: {acc:.4}")
+        let test_dataset: MnistTestDataset = MnistTestDataset::load().unwrap();
+        let samples = test_dataset.images.shape()[0];
+        let x_test = test_dataset.images.unsqueeze::<1>().to_kind::<f32>();
+        let y_test = test_dataset.labels.to_kind::<u32>();
+
+        let preds = model.forward(&x_test).argmax::<1>();
+        let correct = preds.eq(&y_test).to_kind::<u32>().sum_all().to_scalar();
+        let accuracy = correct as f32 / samples as f32;
+        println!("Accuracy on test set: {accuracy:.4}");
     }
-
-    // Testing with the trained model
-    let test_dataset: MnistTestDataset = MnistTestDataset::load().unwrap();
-    let samples = test_dataset.images.shape()[0];
-    let x_test = test_dataset.images.unsqueeze::<1>().to_kind::<f32>();
-    let y_test = test_dataset.labels.to_kind::<u32>();
-
-    let preds = model.forward(&x_test).argmax::<1>();
-    let correct = preds.eq(&y_test).to_kind::<u32>().sum_all().to_scalar();
-    let accuracy = correct as f32 / samples as f32;
-    println!("Accuracy on test set: {accuracy:.4}");
-
-    vm.save(format!("mnist{accuracy:.0}.safetensors")).unwrap();
 }

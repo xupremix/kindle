@@ -51,6 +51,7 @@ pub mod prelude {
     pub use kind::*;
     pub use nn::prelude::*;
     pub use nn::*;
+    pub use optim::*;
     pub use shape::*;
     pub use tensor::prelude::*;
     pub use tensor::*;

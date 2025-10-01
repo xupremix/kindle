@@ -6,4 +6,4 @@ readme.workspace = true
 license.workspace = true
 
 [dependencies]
-kindle = { path = "../../", version = "*", features = ["onnx", "parquet", "nightly"] }
+kindle = { path = "../../", version = "*", features = ["cuda", "onnx", "parquet", "nightly"] }

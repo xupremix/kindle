@@ -22,17 +22,19 @@ dataset! {
     "/home/xupremix/Desktop/test.parquet"
 }
 
-const LR: f64 = 0.1;
-const BATCH_SIZE: usize = 30;
+const LR: f64 = 5e-4;
+const BATCH_SIZE: usize = 120;
+const TEST_BATCH_SIZE: usize = 50;
 const EPOCHS: usize = 3;
 const N_SAMPLES: usize = 60_000;
+const NORMALIZE: f32 = 255.;
 
 struct MnistModel {
     conv1: Conv2d<1, 32>,
     maxp1: MaxPool2d<Kernel<2>, Stride<2>>,
     conv2: Conv2d<32, 64>,
     maxp2: MaxPool2d<Kernel<2>, Stride<2>>,
-    fc: Linear<1_600, 10>,
+    fc: Linear<1600, 10>,
 }
 
 impl MnistModel {
@@ -49,15 +51,15 @@ impl MnistModel {
     fn forward<const BATCH: usize>(
         &self,
         xs: &Tensor<Rank4<BATCH, 1, 28, 28>>,
+        train: bool,
     ) -> Tensor<Rank2<BATCH, 10>> {
         let xs = self.conv1.forward(xs).relu();
         let xs = self.maxp1.forward(&xs);
         let xs = self.conv2.forward(&xs).relu();
-        let xs = self
-            .maxp2
-            .forward(&xs)
-            .flatten_from::<1, Rank2<_, _>>()
-            .dropout(0.5);
+        let mut xs = self.maxp2.forward(&xs).flatten_from::<1, Rank2<_, _>>();
+        if train {
+            xs = xs.dropout(0.5);
+        }
         self.fc.forward(&xs)
     }
 }
@@ -69,7 +71,7 @@ fn main() {
         let vm = VarMap::new();
         let vs: Vs = Vs::from_varmap(&vm);
         let train_dataset: MnistTrainDataset = MnistTrainDataset::load().unwrap();
-        let tensors = train_dataset.images.unsqueeze::<1>().to_kind::<f32>();
+        let tensors = train_dataset.images.unsqueeze::<1>().to_kind::<f32>() / NORMALIZE;
 
         let x_train = &tensors.chunk::<0, BATCH_SIZE>();
         let y_train = &train_dataset
@@ -86,10 +88,11 @@ fn main() {
             let mut n_correct = 0;
 
             for (x, y) in x_train.iter().zip(y_train) {
-                let logits = model.forward(x);
+                let logits = model.forward(x, true);
 
                 // Loss calculation
                 let loss = Loss::cross_entropy(&logits, y);
+                // println!("loss: {:.4}", loss.to_scalar());
                 total_loss += loss.to_scalar();
                 optim.backward_step(&loss);
 
@@ -102,7 +105,8 @@ fn main() {
             acc = n_correct as f32 / N_SAMPLES as f32;
             println!("epoch {epoch}: loss: {total_loss:.4}, accuracy: {acc:.4}");
         }
-        vm.save(format!("mnist{acc:.0}.safetensors")).unwrap();
+        vm.save(format!("mnist{:.0}.safetensors", acc * 100.))
+            .unwrap();
     } else {
         // Testing with the trained model
         let mut vm = VarMap::new();
@@ -112,11 +116,23 @@ fn main() {
 
         let test_dataset: MnistTestDataset = MnistTestDataset::load().unwrap();
         let samples = test_dataset.images.shape()[0];
-        let x_test = test_dataset.images.unsqueeze::<1>().to_kind::<f32>();
-        let y_test = test_dataset.labels.to_kind::<u32>();
+        let x_test = test_dataset.images.unsqueeze::<1>().to_kind::<f32>() / NORMALIZE;
 
-        let preds = model.forward(&x_test).argmax::<1>();
-        let correct = preds.eq(&y_test).to_kind::<u32>().sum_all().to_scalar();
+        let x_test = &x_test.chunk::<0, TEST_BATCH_SIZE>();
+        let y_test = &test_dataset
+            .labels
+            .to_kind::<u32>()
+            .chunk::<0, TEST_BATCH_SIZE>();
+
+        let mut correct = 0;
+        for (x_batch, y_batch) in x_test.iter().zip(y_test) {
+            let preds = model
+                .forward(&x_batch, false)
+                .softmax_last_dim()
+                .argmax::<1>();
+            correct += preds.eq(&y_batch).to_kind::<u32>().sum_all().to_scalar();
+        }
+
         let accuracy = correct as f32 / samples as f32;
         println!("Accuracy on test set: {accuracy:.4}");
     }

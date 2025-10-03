@@ -7,5 +7,5 @@ license.workspace = true
 
 [dependencies]
 clap = { version = "4.5.48", features = ["derive"] }
-kindle = { path = "../../", version = "*", features = ["parquet", "nightly"] }
+kindle = { path = "../../", version = "*", features = ["cuda", "parquet", "nightly"] }
 # kindle = { path = "../../", version = "*", features = ["cuda", "onnx", "parquet", "nightly"] }

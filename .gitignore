@@ -5,3 +5,4 @@ Cargo.lock
 .idea
 MNIST/
 mnist-venv/
+__pycache__/

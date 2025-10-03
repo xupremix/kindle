@@ -3,3 +3,5 @@ Cargo.lock
 *.safetensors
 *.onnx
 .idea
+MNIST/
+mnist-venv/

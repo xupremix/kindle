@@ -86,13 +86,6 @@ pub trait ToScalar: Shape {
 }
 impl<S: Shape> ToScalar for S {}
 
-//TODO: look into this new trait if it's actually necessary
-// pub trait Index<S: Shape> {
-//     const INDEX_CHECK: ();
-//     type IndexShape: Shape;
-//     fn indexes() -> &'static [u32];
-// }
-
 pub trait Indexer<S: Shape, const KEEP_DIM: bool> {
     type IndexShape: Shape;
     fn indexes() -> &'static [usize];

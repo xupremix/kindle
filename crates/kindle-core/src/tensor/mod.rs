@@ -90,6 +90,10 @@ impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
         S::dims()
     }
 
+    pub fn copy(&self) -> Self {
+        Self::from_candle_tensor(self.repr.copy().unwrap())
+    }
+
     pub fn stride(&self) -> &[usize] {
         self.repr.stride()
     }

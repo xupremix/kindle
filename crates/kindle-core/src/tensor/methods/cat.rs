@@ -5,13 +5,13 @@ use crate::{
 
 impl<S: Shape, K: Kind, D: Device> Tensor<S, K, D> {
     pub fn cat<const DIM: usize, const N: usize, Dst: Shape>(
-        tensors: &[&Self; N],
+        tensors: &[impl AsRef<Self>; N],
     ) -> Tensor<Dst, K, D>
     where
         S: Cat<DIM, N, Dst>,
     {
         S::CAT_CHECK;
-        let tensors = tensors.iter().map(|&t| &t.repr).collect::<Vec<_>>();
+        let tensors = tensors.iter().map(|t| &t.as_ref().repr).collect::<Vec<_>>();
         Tensor {
             repr: candle_core::Tensor::cat(&tensors, DIM).unwrap(),
             ..Default::default()

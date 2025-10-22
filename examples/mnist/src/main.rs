@@ -23,7 +23,7 @@ dataset! {
 }
 
 const LR: f64 = 5e-4;
-const BATCH_SIZE: usize = 120;
+const BATCH_SIZE: usize = 5;
 const TEST_BATCH_SIZE: usize = 50;
 const EPOCHS: usize = 3;
 const N_SAMPLES: usize = 60_000;

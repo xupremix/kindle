@@ -131,3 +131,47 @@ pub trait SwigluShape: Shape {
 pub trait MaxPool2dShape: Shape {
     type MaxPool2dShape: Shape;
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::prelude::*;
+    use std::any::TypeId;
+
+    macro_rules! gen_assert {
+        ($name:ident, $code:block $($a:ty, $b:ty),* $(,)?) => {
+            #[test]
+            fn $name() {
+                $code
+                $(
+                    assert_eq!(TypeId::of::<$a>(), TypeId::of::<$b>());
+                )*
+            }
+        };
+    }
+
+    gen_assert! {
+        matmul,
+        {
+            let t: Tensor<Rank2<1, 2>> = Tensor::ones();
+            let t2: Tensor<Rank2<2, 3>> = Tensor::ones();
+            let ris: Vec<f32> = t.matmul(&t2).data().chunks_exact(4).map(|b| f32::from_le_bytes(b.try_into().unwrap())).collect();
+            let target = [[2.; 3]].concat();
+            assert_eq!(ris, target);
+
+        }
+        <Rank2<2, 3> as Matmul<Rank2<1, 2>>>::MatmulShape,
+        Rank2<1, 3>,
+        <Rank3<1, 3, 4> as Matmul<Rank3<1, 2, 3>>>::MatmulShape,
+        Rank3<1, 2, 4>,
+        <Rank4<1, 2, 4, 5> as Matmul<Rank4<1, 2, 3, 4>>>::MatmulShape,
+        Rank4<1, 2, 3, 5>,
+        <Rank5<1, 2, 3, 5, 6> as Matmul<Rank5<1, 2, 3, 4, 5>>>::MatmulShape,
+        Rank5<1, 2, 3, 4, 6>,
+        <Rank6<1, 2, 3, 4, 6, 7> as Matmul<Rank6<1, 2, 3, 4, 5, 6>>>::MatmulShape,
+        Rank6<1, 2, 3, 4, 5, 7>,
+        <Rank7<1, 2, 3, 4, 5, 7, 8> as Matmul<Rank7<1, 2, 3, 4, 5, 6, 7>>>::MatmulShape,
+        Rank7<1, 2, 3, 4, 5, 6, 8>,
+        <Rank8<1, 2, 3, 4, 5, 6, 8, 9> as Matmul<Rank8<1, 2, 3, 4, 5, 6, 7, 8>>>::MatmulShape,
+        Rank8<1, 2, 3, 4, 5, 6, 7, 9>,
+    }
+}

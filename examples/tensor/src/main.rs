@@ -3,29 +3,20 @@
 
 use kindle::prelude::*;
 
-type Model = (
-    (Linear<10, 20>, Relu),
-    (Linear<20, 30>, Relu),
-    Linear<30, 2>,
-);
-
-#[derive(Module)]
-struct Custom {
-    l: Linear<10, 20>,
-    r: Relu,
-    l2: Linear<20, 30>,
-    r2: Relu,
-    l3: Linear<30, 2>,
-}
-
 fn main() {
+    #[derive(Module)]
+    struct Model {
+        l: Linear<10, 20>,
+        r: Relu,
+        l2: Linear<20, 2>,
+    }
     let vm = VarMap::new();
     let vs: Vs = Vs::from_varmap(&vm);
-    let model = Model::build(&vs, Default::default());
-    let xs: Tensor<Rank3<2, 2, 10>> = Tensor::ones();
-
-    // let xs = xs.flatten_all::<40>();
-    println!("Before: \n{xs}");
+    let model = Model {
+        l: Linear::linear(&vs, "l"),
+        r: Relu,
+        l2: Linear::linear(&vs, "l2"),
+    };
+    let xs: Tensor<Rank2<2, 10>> = Tensor::ones();
     let xs = model.forward(&xs);
-    println!("After: \n{xs}");
 }

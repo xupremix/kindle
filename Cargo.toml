@@ -30,6 +30,7 @@ cuda = ["kindle-core/cuda"]
 onnx = ["kindle-core/onnx"]
 parquet = ["kindle-core/parquet"]
 
+
 [dependencies.kindle-core]
 path = "crates/kindle-core"
 version = "0.1.0"
@@ -47,3 +48,4 @@ candle-nn = "0.9.1"
 candle-core = "0.9.1"
 candle-transformers = "0.9.1"
 tch = { version = "0.19.0" }
+
